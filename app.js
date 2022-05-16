@@ -29,5 +29,6 @@ io.on("connection", (socket) => {
 
     socket.send("연결 잘됬음")
 
+
     socket.emit("customEventName", "새로운 이벤트인가?")
 })
