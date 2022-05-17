@@ -15,6 +15,7 @@ module.exports = (server) => {
     const addNewUser = (username, socketId) => {
         !onlineUsers.some((user) => user.username === username) &&
             onlineUsers.push({ username, socketId });
+        console.log(11, socketId)
     };
 
     const removeUser = (socketId) => {
@@ -36,6 +37,7 @@ module.exports = (server) => {
                 senderName,
                 type,
             });
+            console.log(22, receiver.socketId)
         });
 
         socket.on("sendText", ({ senderName, receiverName, text }) => {
