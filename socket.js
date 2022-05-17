@@ -32,14 +32,14 @@ module.exports = (server) => {
             addNewUser(username, socket.id);
         });
 
-        socket.on("sendNotification", ({ senderName, receiverName, type, caterory }) => {
+        socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
             const receiver = getUser(receiverName);
             io.to(receiver.socketId).emit("getNotification", {
                 senderName,
                 type,
-                caterory
+                category
             });
-            console.log(33, senderName, type, caterory)
+            console.log(33, senderName, type, category)
             console.log(44, receiver)
         });
 
