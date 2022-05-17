@@ -1,6 +1,17 @@
 const express = require('express')
-const port = 8005
+const path = require('path')
+const cookieParser = require('cookie-parser')
+const nunjucks = require('nunjucks')
+
+
 const app = express()
+app.set('port', 8005);
+app.set('view engine', 'html');
+
+nunjucks.configure('views', {
+    express: app,
+    watch: true,
+});
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
