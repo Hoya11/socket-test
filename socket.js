@@ -3,7 +3,12 @@ const SocketIO = require('socket.io');
 module.exports = (server) => {
     // 서버 연결, path는 프론트와 일치시켜준다.
 
-    const io = SocketIO(server, { path: '/socket.io' });
+    const io = SocketIO(server, {
+        cors: {
+            origin: "*",
+            methods: ["GET", "POST"]
+        }
+    });
     //* 웹소켓 연결 시
     io.on('connection', (socket) => {
         const req = socket.request; // 웹소켓과는 달리 req객체를 따로 뽑아야함

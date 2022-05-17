@@ -35,6 +35,9 @@ app.use(
   })
 )
 
+
+
+
 // 라우터 연결
 app.use(indexRouter)
 
@@ -42,6 +45,7 @@ app.use(indexRouter)
 app.use((req, res, next) => {
   res.sendStatus(404)
 })
+
 
 
 
