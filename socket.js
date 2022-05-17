@@ -15,7 +15,7 @@ module.exports = (server) => {
     const addNewUser = (username, socketId) => {
         !onlineUsers.some((user) => user.username === username) &&
             onlineUsers.push({ username, socketId });
-        console.log(11, socketId)
+        // console.log(11, socketId)
         console.log(22, onlineUsers)
     };
 
