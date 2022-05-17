@@ -14,6 +14,7 @@ const getUser = async (req, res) => {
     user.password = ""
     const { userId } = res.locals.user
     const familyChk = await FamilyMember.find({ userId })
+    console.log(123, familyChk)
 
     let familyList = []
     if (familyChk.length) {
@@ -21,8 +22,10 @@ const getUser = async (req, res) => {
         const Checkedfamily = await Family.findOne({ _id: family.familyId })
         familyList.push(Checkedfamily)
       }
+      console.log("유저정보", user, familyList)
       res.status(200).json({ user, familyList })
     } else {
+      // familyList = []
       res.status(200).json({ user, familyList })
     }
   } catch (error) {
@@ -39,6 +42,7 @@ const getUser = async (req, res) => {
 //프로필 조회 API
 const getProfile = async (req, res) => {
   try {
+    console.log(res.locals)
     const { email } = res.locals.user
     const userInfo = await User.findOne({ email })
     const nickname = userInfo.nickname

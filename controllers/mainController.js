@@ -15,7 +15,6 @@ const RandomMsg = require("../schemas/randomMsg")
 const getMainPage = async (req, res) => {
   const { familyId } = req.params
   const { userId } = res.locals.user
-
   try {
     // 랜덤메시지 랜덤추출
     const randomMsg = await RandomMsg.aggregate([{ $sample: { size: 1 } }])
@@ -25,16 +24,17 @@ const getMainPage = async (req, res) => {
     const familyInfo = await Family.findOne({ _id: familyId })
     // 가족 멤버리스트 추출
     const familyMemberList = await FamilyMember.find({ familyId })
-    if (familyMemberList.length) {
-      for (let familyMember of familyMemberList) {
-        const user = await User.findOne({ _id: familyMember.userId })
-        if (user.todayMood) {
-          familyMember.todayMood = user.todayMood
-        } else {
-          familyMember.todayMood = null
-        }
-      }
-    }
+    // if (familyMemberList.length) {
+    //   for (let familyMember of familyMemberList) {
+    //     const user = await User.findOne({ _id: familyMember.userId })
+    //     if (user.todayMood) {
+    //       familyMember.todayMood = user.todayMood
+    //     } else {
+    //       familyMember.todayMood = null
+    //     }
+    //   }
+    // }
+
     // 최신사진 추출
     let recentPhoto = []
     const photos = await Photo.find({ familyId }).sort("-createdAt")

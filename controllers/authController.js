@@ -31,12 +31,11 @@ const userSchema = Joi.object({
 
   passwordCheck: Joi.string(),
 
-  nickname: Joi.string()
-    .min(3)
-    .max(15)
-    .pattern(new RegExp("^[a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣+]*$")),
+  nickname: Joi.string().pattern(
+    new RegExp("^[가-힣ㄱ-ㅎa-zA-Z0-9._ -]{2,15}$")
+  ),
 
-  //3-15자 / 숫자,영어,한글만 가능 / 특수문자 불가능/ 띄어쓰기 불가.
+  //2-15자 / 숫자, 영어, 한국어와 언더스코어, 공백 허용
 
   profileImg: Joi.string(),
   todayMood: Joi.string(),
@@ -72,7 +71,6 @@ const signup = async (req, res) => {
     }
 
     const hashed = await bcrypt.hash(password, 10)
-    // console.log(111, hashed)
     const user = new User({
       email,
       password: hashed,
@@ -92,8 +90,11 @@ const signup = async (req, res) => {
 
     res.status(201).json({ msg: "회원가입이 완료되었습니다.", user: user })
   } catch (error) {
-    console.log(error);
-    res.status(400).json({ msg: "요청한 조건 형식이 올바르지 않습니다." })
+    console.log(`${req.method} ${req.originalUrl} : ${error.message}`)
+    res.status(400).json({
+      msg: "요청한 조건 형식이 올바르지 않습니다.",
+      result: `${req.method} ${req.originalUrl} : ${error.message}`,
+    })
   }
 }
 
@@ -135,7 +136,7 @@ const login = async (req, res) => {
 
     const options = {
       issuer: "백엔드 개발자", // 발행자
-      expiresIn: config.jwt.expiresInSec,
+      expiresIn: config.jwt.expiresIn,
     }
     const token = jwt.sign(payload, config.jwt.secretKey, options)
     const userChk = await User.findOne({ email })
@@ -155,6 +156,7 @@ const login = async (req, res) => {
 
         familyList.push(Checkedfamily)
       }
+      console.log("일반로그인", token)
       res.status(200).json({
         logIntoken: token,
         userInfoList: userInfoList,
@@ -185,14 +187,26 @@ const kakaoCallback = (req, res, next) => {
   passport.authenticate("kakao", { failureRedirect: "/" }, (err, user) => {
     console.log("카카오로그인 userInfo", user)
     if (err) return next(err)
-    const token = jwt.sign({ snsId: user.snsId }, config.jwt.secretKey)
-
+    console.log(11111, user._id)
+    const options = {
+      issuer: "백엔드 개발자",
+      expiresIn: config.jwt.expiresIn,
+    }
+    const token = jwt.sign({ email: user.email }, config.jwt.secretKey, options)
+    // 유저의 가족 리스트 추출
+    // const familyChk = FamilyMember.find({ userId: user._id })
+    // let familyList = []
+    // if (familyChk.length) {
+    //   for (let family of familyChk) {
+    //     const Checkedfamily = Family.findOne({ _id: family.familyId })
+    //     familyList.push(Checkedfamily)
+    //   }
+    // }
+    console.log("카카오토큰", token)
     res.json({
       token,
-      nickname: user.nickname,
-      profileImg: user.profileImg,
-      email: user.email,
-      snsId: user.snsId,
+      user,
+      // familyList,
     })
   })(req, res, next)
 }

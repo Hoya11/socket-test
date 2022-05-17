@@ -5,9 +5,6 @@ const voiceAlbumSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  voiceAlbumCover: {
-    type: String,
-  },
   familyId: {
     type: String,
     required: true,
