@@ -4,11 +4,11 @@ const RandomMsg = require('../schemas/randomMsg');
 const postRandomMsg = async (req, res) => {
   const { randomMsg } = req.body;
   const createdAt = new Date();
-
+  console.log(randomMsg)
   try {
     // 공백 체크
     if (randomMsg !== null && randomMsg !== '') {
-      await randomMsg.create({
+      await RandomMsg.create({
         randomMsg,
         createdAt,
       });
