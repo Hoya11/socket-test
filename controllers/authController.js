@@ -136,7 +136,7 @@ const login = async (req, res) => {
 
     const options = {
       issuer: "백엔드 개발자", // 발행자
-      expiresIn: config.jwt.expiresIn,
+      expiresIn: "2d",
     }
     const token = jwt.sign(payload, config.jwt.secretKey, options)
     const userChk = await User.findOne({ email })
