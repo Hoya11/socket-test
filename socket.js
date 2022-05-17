@@ -38,8 +38,10 @@ module.exports = (server) => {
                 senderName,
                 type,
             });
-            console.log(22, receiver)
+            console.log(33, senderName, type)
+            console.log(44, receiver)
         });
+
 
         socket.on("sendText", ({ senderName, receiverName, text }) => {
             const receiver = getUser(receiverName);
@@ -48,6 +50,8 @@ module.exports = (server) => {
                 text,
             });
         });
+
+
 
         socket.on("disconnect", () => {
             removeUser(socket.id);
