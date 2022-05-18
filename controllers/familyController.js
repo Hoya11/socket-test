@@ -74,7 +74,8 @@ const createFamily = async (req, res) => {
 
 
     const newRoom = await Room.create({
-      familyId: newFamily.familyId
+      familyId: newFamily.familyId,
+      userId: user.userId,
     })
 
     const familyHost = await FamilyMember.create({
