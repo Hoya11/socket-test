@@ -52,8 +52,6 @@ module.exports = (server) => {
             });
         });
 
-
-
         socket.on("disconnect", () => {
             removeUser(socket.id);
         });

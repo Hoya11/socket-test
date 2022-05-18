@@ -23,6 +23,8 @@ router.post('/', authMiddleware, createFamily)
 //가족 구성원 생성 api
 router.post('/:familyId', authMiddleware, createFamilyMember)
 
+
+
 //멤버 검색 API
 router.get('/search', authMiddleware, searchUser)
 
