@@ -14,7 +14,7 @@ const getUser = async (req, res) => {
     user.password = ""
     const { userId } = res.locals.user
     const familyChk = await FamilyMember.find({ userId })
-    console.log(123, familyChk)
+    console.log("familyChk", familyChk)
 
     let familyList = []
     if (familyChk.length) {

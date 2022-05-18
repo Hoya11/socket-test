@@ -14,13 +14,21 @@ module.exports = (server, app, sessionMiddleware) => {
 
     // app.set("io", io)
 
+    console.log(11, sessionMiddleware)
+
     const room = io.of("/rooms")
     room.use(ios(sessionMiddleware, { autoSave: true }))
+    console.log(22, sessionMiddleware)
+
     const chat = io.of("/chat")
     chat.use(ios(sessionMiddleware, { autoSave: true }))
+    console.log(33, sessionMiddleware)
 
     const test = io.of("/userin")
     test.use(ios(sessionMiddleware, { autoSave: true }))
+    console.log(44, sessionMiddleware)
+
+
     test.on("connection", socket => {
         console.log("클라이언트 연결")
         //const redis = redisClient
@@ -205,34 +213,34 @@ module.exports = (server, app, sessionMiddleware) => {
             chat: `${req.session.color}님이 입장하셨습니다.`,
         })
 
-        socket.on("disconnect", () => {
-            console.log("chat 네임스페이스 접속 해제")
-            socket.leave(roomId)
-            const currentRoom = socket.adapter.rooms[roomId]
-            const userCount = currentRoom ? currentRoom.length : 0
-            if (userCount === 0) {
-                // 유저가 0명이면 방 삭제
-                axios
-                    // 주소 수정 필요
-                    .delete(`https://lebania.shop/test/room/${roomId}`, {
-                        headers: {
-                            Cookie: socket.handshake.headers.cookie,
-                        },
-                    })
-                    .then(() => {
-                        console.log("방 제거 요청 성공")
-                    })
-                    .catch(error => {
-                        console.error(error)
-                    })
-            } else {
-                socket.to(roomId).emit("exit", {
-                    user: "system",
-                    chat: `${req.session.color}님이 퇴장하셨습니다.`,
-                    //session.color ??
-                })
-            }
-        })
+        // socket.on("disconnect", () => {
+        //     console.log("chat 네임스페이스 접속 해제")
+        //     socket.leave(roomId)
+        //     const currentRoom = socket.adapter.rooms[roomId]
+        //     const userCount = currentRoom ? currentRoom.length : 0
+        //     if (userCount === 0) {
+        //         // 유저가 0명이면 방 삭제
+        //         axios
+        //             // 주소 수정 필요
+        //             .delete(`https://lebania.shop/test/room/${roomId}`, {
+        //                 headers: {
+        //                     Cookie: socket.handshake.headers.cookie,
+        //                 },
+        //             })
+        //             .then(() => {
+        //                 console.log("방 제거 요청 성공")
+        //             })
+        //             .catch(error => {
+        //                 console.error(error)
+        //             })
+        //     } else {
+        //         socket.to(roomId).emit("exit", {
+        //             user: "system",
+        //             chat: `${req.session.color}님이 퇴장하셨습니다.`,
+        //             //session.color ??
+        //         })
+        //     }
+        // })
         socket.on("chat", data => {
             socket.to(data.room).emit(data)
         })
