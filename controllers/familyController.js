@@ -74,7 +74,7 @@ const createFamily = async (req, res) => {
 
 
     const newRoom = await Room.create({
-      newFamily
+      familyId: newFamily.familyId
     })
 
     const familyHost = await FamilyMember.create({
@@ -126,7 +126,7 @@ const createFamily = async (req, res) => {
 
     res
       .status(200)
-      .json({ msg: "가족이 생성되었습니다.", familyId: newFamily.familyId })
+      .json({ msg: "가족이 생성되었습니다.", familyId: newFamily.familyId, newRoom })
   } catch (error) {
     console.log("가족 생성에서 오류!", error)
     res.status(400).send({ msg: "가족 생성에 실패했습니다." })
