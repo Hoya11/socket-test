@@ -61,7 +61,8 @@ app.use(sessionMiddleware);
 //   })
 // )
 
-
+// const io = req.app.get('io');
+// io.of('/room').emit('newRoom', "message")
 
 // 라우터 연결
 app.use(indexRouter)
