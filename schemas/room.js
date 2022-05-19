@@ -1,7 +1,6 @@
 const mongoose = require("mongoose")
 
 const roomSchema = mongoose.Schema({
-
     familyId: {
         type: String,
         required: true
@@ -14,12 +13,12 @@ const roomSchema = mongoose.Schema({
         type: String,
     }
 })
-// roomSchema.virtual('roomId').get(function () {
-//     return this._id.toHexString();
-// });
+roomSchema.virtual('roomId').get(function () {
+    return this._id.toHexString();
+});
 
-// roomSchema.set('toJSON', {
-//     virtuals: true,
-// });
+roomSchema.set('toJSON', {
+    virtuals: true,
+});
 
 module.exports = mongoose.model("Room", roomSchema)
