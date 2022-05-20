@@ -77,6 +77,7 @@ const createFamily = async (req, res) => {
       hostId: user.userId,
       familyMemberList: [{ userId: user.userId, userNickname: user.nickname }]
     })
+    console.log("newRoom =", newRoom)
 
     const familyHost = await FamilyMember.create({
       familyId: newFamily.familyId,
