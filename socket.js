@@ -102,6 +102,7 @@ module.exports = (server) => {
             const findUser = await User.findOne({ email: selectEmail })
             console.log("findUser", findUser)
 
+
             const receiver = getUser(findUser.userId)
             console.log("receiver", receiver)
             io.to(receiver.socketId).emit("inviteMsg", {
@@ -110,6 +111,7 @@ module.exports = (server) => {
                 selectEmail,
                 type: "초대",
                 category: "가족 초대",
+                userId: findUser.userId
             })
         }));
 
