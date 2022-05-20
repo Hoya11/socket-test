@@ -99,26 +99,26 @@ module.exports = (server) => {
             const findUser = await User.findOne({ email: selectEmail })
             console.log("findUser", findUser)
 
-
-
             const receiver = getUser(findUser.userId)
             console.log("receiver", receiver)
             io.to(receiver.socketId).emit("inviteMsg", {
                 familyId,
                 familyMemberNickname,
+                selectEmail,
                 type: "초대",
                 category: "가족 초대",
             })
 
-            // const inviteAlert = await Alert.create({
-            //     familyId,
-            //     familyMemberNickname,
-            //     type,
-            //     category,
-            // })
-            // console.log("inviteAlert", inviteAlert);
-            // next();
         }));
+
+        // const inviteAlert = await Alert.create({
+        //     familyId,
+        //     familyMemberNickname,
+        //     type,
+        //     category,
+        // })
+        // console.log("inviteAlert", inviteAlert);
+        // next();
 
 
         socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
