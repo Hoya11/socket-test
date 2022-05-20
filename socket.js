@@ -114,20 +114,14 @@ module.exports = (server) => {
         }));
 
         //초대 수락버튼 클릭 시 
-        socket.on("inviteJoin", (async (userId) => {
-            console.log("userId =>", userId)
-            const familyList = await FamilyMember.find(userId)
-            console.log("familyList =>", familyList)
+        socket.on("inviteJoin", (async (userId, familyId, familyMemberNickname) => {
 
-            const familyId = familyList[0].familyId
-            console.log("familyId =>", familyId)
+            const findRoom = await Room.findOne({ familyId: familyId })
+            console.log("111", findRoom)
+            findRoom.FamilyMemberList.push({ userId: userId, userNickname: familyMemberNickname })
+            console.log("222", findRoom)
 
-            // const findRoom = await Room.findOne({ familyId })
-            // console.log(22, findRoom)
 
-            // const roomId = findRoom.roomId
-
-            // const findRoomId = roomId
             socket.join(familyId)
             console.log("socket.rooms =>", socket.rooms)
         }));
