@@ -4,6 +4,9 @@ const alertSchema = mongoose.Schema({
     userId: {
         type: String,
     },
+    familyId: {
+        type: String,
+    },
     familyMemberNickname: {
         type: String,
     },

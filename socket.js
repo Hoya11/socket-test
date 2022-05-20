@@ -99,6 +99,14 @@ module.exports = (server) => {
             const findUser = await User.findOne({ email: selectEmail })
             console.log("findUser", findUser)
 
+            const inviteAlert = await Alert.create({
+                familyId,
+                familyMemberNickname,
+                email,
+                type,
+                category,
+            })
+            console.log(inviteAlert)
 
             const receiver = getUser(findUser.userId)
             console.log("receiver", receiver)
@@ -106,7 +114,7 @@ module.exports = (server) => {
                 familyId,
                 familyMemberNickname,
                 type: "초대",
-                category: "가족 초대"
+                category: "가족 초대",
             })
         }))
 
