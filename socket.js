@@ -118,8 +118,9 @@ module.exports = (server) => {
 
             const findRoom = await Room.findOne({ familyId: familyId })
             console.log("111", findRoom)
-            findRoom.FamilyMemberList.push({ userId: userId, userNickname: familyMemberNickname })
-            console.log("222", findRoom)
+
+            const a = findRoom.FamilyMemberList.push({ userId: userId, userNickname: familyMemberNickname })
+            console.log("222", a)
 
 
             socket.join(familyId)
