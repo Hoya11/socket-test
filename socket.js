@@ -66,8 +66,8 @@ module.exports = (server) => {
             console.log(userId)
 
             const findRoom = await Room.findOne({ userId })
-
-            console.log(findRoom)
+            const findRoomId = findRoom._id
+            console.log(findRoomId)
 
             socket.join(roomName)
             console.log(socket.id)
@@ -75,7 +75,6 @@ module.exports = (server) => {
             // console.log("roomId=>", roomName)
 
         }));
-
 
 
 
