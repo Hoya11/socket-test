@@ -126,7 +126,7 @@ module.exports = (server) => {
                 )
             }
 
-
+            console.log("222", findRoom)
             socket.join(familyId)
             console.log("socket.rooms =>", socket.rooms)
         }));
