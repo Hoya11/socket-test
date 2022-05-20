@@ -92,13 +92,12 @@ module.exports = (server) => {
 
         socket.on("inviteMember", (async ({ familyId, familyMemberNickname, selectEmail }) => {
             console.log("5555", familyId, familyMemberNickname, selectEmail)
-            const findUser = await User.find({ email: selectEmail })
-
-            const userId = findUser.userId
-            const receiver = getUser(userId)
-
-
+            const findUser = await User.findOne({ email: selectEmail })
             console.log("findUser", findUser)
+
+            const receiver = getUser(findUser._id)
+
+
             console.log("receiver", receiver)
 
 
