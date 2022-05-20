@@ -5,13 +5,13 @@ const roomSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    userId: {
+        type: String,
+    },
     connected: {
         type: Boolean,
         default: false,
     },
-    userId: {
-        type: String,
-    }
 })
 roomSchema.virtual('roomId').get(function () {
     return this._id.toHexString();

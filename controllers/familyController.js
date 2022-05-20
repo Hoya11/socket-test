@@ -226,24 +226,17 @@ const searchUser = async (req, res) => {
   const { search } = req.query
   try {
     let searchKeywords = await User.find({ $text: { $search: search } })
-    console.log(1, searchKeywords)
-
     if (searchKeywords.length) {
       for (let searchKeyword of searchKeywords) {
-        console.log(2, searchKeyword)
         const keyword1 = search.split("@")
         const keyword2 = searchKeyword.email.split("@")
-        console.log(3, keyword1, keyword2)
-
         if (search === searchKeyword.email) {
           const userEmail = searchKeyword.email
-          console.log(5, userEmail)
           return res.status(200).json({
             userEmail,
           })
         } else if (keyword1[0] === keyword2[0] && keyword1[1] !== keyword2[1]) {
           const userEmail = searchKeyword.email
-          console.log(4, userEmail)
           return res.status(200).json({
             userEmail,
           })

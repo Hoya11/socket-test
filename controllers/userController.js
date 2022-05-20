@@ -65,26 +65,50 @@ const getProfile = async (req, res) => {
 //프로필 수정 API
 const editProfile = async (req, res) => {
   try {
-    const { email } = res.locals.user
-    const { nickname, profileImg } = req.body
-
-    await User.updateOne(
-      { email },
-      {
-        $set: {
-          nickname: req.body.nickname,
-          profileImg: req.body.profileImg,
-        },
+    const { userId } = res.locals.user
+    const photoFile = req.file.location
+    // 파일 업로드 공백 체크
+    if (photoFile !== null) {
+      const existUser = await User.findOne({ _id: userId })
+      if (existUser) {
+        // 유저 db 수정
+        await User.updateOne(
+          { _id: userId },
+          { $set: { profileImg: photoFile } }
+        )
+        // 가족멤버 db 수정
+        await FamilyMember.updateMany(
+          { userId },
+          { $set: { profileImg: photoFile } }
+        )
+        // 이벤트 db 수정
+        await Event.updateMany({ userId }, { $set: { profileImg: photoFile } })
+        // 미션멤버 db 수정
+        await MissionMember.updateMany(
+          { userId },
+          { $set: { profileImg: photoFile } }
+        )
+        // 음성파일 db 수정
+        await VoiceFile.updateMany(
+          { userId },
+          { $set: { profileImg: photoFile } }
+        )
+        res.status(200).json({
+          photoFile,
+          msg: "프로필 사진이 수정되었어요.",
+        })
       }
-    )
-
-    res.status(200).json({
-      nickname,
-      profileImg,
-    })
+    } else {
+      res.status(400).send({
+        result: false,
+        msg: "사진을 등록해주세요.",
+      })
+    }
   } catch (error) {
     console.log("프로필 수정에서 오류!", error)
-    res.status(400).send({ result: false })
+    res.status(400).send({
+      result: false,
+    })
   }
 }
 

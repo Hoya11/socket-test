@@ -18,32 +18,41 @@ module.exports = (server) => {
     // 네임스페이스 등록
     const room = io.of('/room')
 
-    let onlineUsers = [];
-
-    const addNewUser = (username, socketId) => {
-        !onlineUsers.some((user) => user.username === username) &&
-            onlineUsers.push({ username, socketId });
-        // console.log(11, socketId)
-        // console.log(22, onlineUsers)
-    };
-
-    const removeUser = (socketId) => {
-        onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
-    };
-
-    const getUser = (username) => {
-        return onlineUsers.find((user) => user.username === username);
-    };
 
     //* 웹소켓 연결 시
     io.on("connection", (socket) => {
-        socket.on("newRoom", (username, roomName, done) => {
-            console.log("socket.id =>", socket.id)
-            console.log("socket.rooms =>", socket.rooms)
+
+
+        let onlineUsers = [];
+
+        const addNewUser = (username, socketId) => {
+            !onlineUsers.some((user) => user.username === username) &&
+                onlineUsers.push({ username, socketId });
+            // console.log(11, socketId)
+            // console.log(22, onlineUsers)
+        };
+
+        const removeUser = (socketId) => {
+            onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
+        };
+
+        const getUser = (username) => {
+            return onlineUsers.find((user) => user.username === username);
+        };
+
+
+        socket.on("newUser", username => {
+            addNewUser(username, socket.id)
+            console.log(111, username, socket.id)
+        })
+
+        socket.on("newRoom", (roomName) => {
             socket.join(roomName)
             console.log("socket.rooms =>", socket.rooms)
-            addNewUser(username, socket.id);
         });
+
+        // socket.on("addRoomMember", ({ roomName, }))
+
 
         socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
             const receiver = getUser(receiverName);
