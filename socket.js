@@ -71,7 +71,7 @@ module.exports = (server) => {
         socket.on("join", (async (userId) => {
 
             const findRoom = await Room.find({ userId: userId })
-            console.log(222, findRoom)
+            console.log(222, findRoom.userId)
             const findRoomId = findRoom.roomId
             socket.join(findRoomId)
             console.log("socket.rooms =>", socket.rooms)
