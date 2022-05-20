@@ -52,8 +52,9 @@ module.exports = (server) => {
         const {
             headers: { referer },
         } = req;
-
-        const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
+        console.log(999, referer)
+        console.log(req)
+        // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
 
         socket.on("newUser", userId => {
             addNewUser(userId, socket.id)
