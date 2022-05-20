@@ -47,7 +47,8 @@ module.exports = (server) => {
 
     //* 웹소켓 연결 시
     room.on("connection", (socket) => {
-        socket.emit('rooms', _.keys(io.sockets.manager.rooms));
+
+
         // const req = socket.request;
         // const {
         //     headers: { referer },
@@ -63,6 +64,7 @@ module.exports = (server) => {
 
         socket.on("newRoom", (roomName) => {
             socket.join(roomName)
+            socket.emit('rooms', _.keys(io.sockets.manager.rooms));
             console.log("socket.rooms =>", socket.rooms)
             // console.log("roomId=>", roomName)
         });
