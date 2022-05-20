@@ -62,14 +62,19 @@ module.exports = (server) => {
             console.log(111, userId, socket.id)
         })
 
-        socket.on("newRoom", (roomName, userId) => {
+        socket.on("newRoom", (async (roomName, userId) => {
             console.log(userId)
+
+            const findRoom = await Room.findOne({ userId })
+
+            console.log(findRoom)
+
             socket.join(roomName)
             console.log(socket.id)
             console.log("socket.rooms =>", socket.rooms)
             // console.log("roomId=>", roomName)
 
-        });
+        }));
 
 
 
