@@ -197,8 +197,9 @@ const createFamilyMember = async (req, res) => {
 
     const findRoom = await Room.find({ familyId })
     console.log(findRoom)
+    console.log(111, { userId: familyMember.userId, userNickname: familyMember.familyMemberNickname })
     const pushRoomMember = findRoom.familyMemberList.push({ userId: familyMember.userId, userNickname: familyMember.familyMemberNickname })
-    console.log({ userId: familyMember.userId, userNickname: familyMember.familyMemberNickname })
+    console.log(222, { userId: familyMember.userId, userNickname: familyMember.familyMemberNickname })
     res.status(201).json({
       restult: true,
       familyMember,
