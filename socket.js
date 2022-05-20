@@ -46,7 +46,7 @@ module.exports = (server) => {
     // })
 
     //* 웹소켓 연결 시
-    io.on("connection", (socket) => {
+    room.on("connection", (socket) => {
 
 
         socket.on("newUser", userId => {
