@@ -62,12 +62,13 @@ module.exports = (server) => {
             console.log(111, userId, socket.id)
         })
 
-        socket.on("newRoom", (roomName) => {
-            console.log(socket.id)
+        socket.on("newRoom", (roomName, userId) => {
+            console.log(userId)
             socket.join(roomName)
             console.log(socket.id)
             console.log("socket.rooms =>", socket.rooms)
             // console.log("roomId=>", roomName)
+
         });
 
 
