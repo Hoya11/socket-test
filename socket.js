@@ -69,7 +69,7 @@ module.exports = (server) => {
         }));
 
         socket.on("join", (async (userId) => {
-
+            console.log(userId)
             const familyList = await FamilyMember.find({ userId: userId })
             console.log(familyList)
 
