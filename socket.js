@@ -49,12 +49,12 @@ module.exports = (server) => {
     room.on("connection", (socket) => {
 
 
-        const req = socket.request;
-        const {
-            headers: { referer },
-        } = req;
+        // const req = socket.request;
+        // const {
+        //     headers: { referer },
+        // } = req;
 
-        const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
+        // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
 
 
 
