@@ -69,6 +69,7 @@ module.exports = (server) => {
 
         socket.on("join", (async (userId) => {
             const findRoom = await Room.findOne({ userId: userId })
+            console.log(222, findRoom)
             const findRoomId = findRoom.roomId
             socket.join(findRoomId)
             console.log("socket.rooms =>", socket.rooms)
@@ -76,10 +77,12 @@ module.exports = (server) => {
 
         socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
             const receiver = getUser(receiverName);
+            const date = new Date();
             io.to(receiver.socketId).emit("getNotification", {
                 senderName,
                 type,
-                category
+                category,
+                date
             });
             console.log(33, senderName, type, category)
             console.log(44, receiver)
