@@ -77,12 +77,11 @@ module.exports = (server) => {
 
         socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
             const receiver = getUser(receiverName);
-            const date = new Date();
+            // const date = new Date();
             io.to(receiver.socketId).emit("getNotification", {
                 senderName,
                 type,
                 category,
-                date
             });
             console.log(33, senderName, type, category)
             console.log(44, receiver)
