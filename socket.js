@@ -94,7 +94,7 @@ module.exports = (server) => {
             console.log("5555", familyId, familyMemberNickname, selectEmail)
             const findUser = await User.find({ email: selectEmail })
 
-            const receiver = getUser(findUser.userId)
+            const receiver = getUser(findUser._id)
 
 
             console.log("findUser", findUser)
