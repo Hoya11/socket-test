@@ -2,7 +2,7 @@ const SocketIO = require('socket.io');
 // const ios = require('express-socket.io-session');
 const User = require('./schemas/user')
 const Room = require('./schemas/room');
-const familyMember = require('./schemas/familyMember');
+const FamilyMember = require('./schemas/familyMember');
 
 module.exports = (server) => {
     // 서버 연결, path는 프론트와 일치시켜준다.
@@ -70,10 +70,13 @@ module.exports = (server) => {
 
         socket.on("join", (async (userId) => {
 
-            const findRoom = await Room.find({ userId: userId })
-            console.log(222, findRoom[0].familyMemberList[0].userId)
-            console.log(333, findRoom[0])
-            const findRoomId = findRoom.roomId
+            const familyList = await FamilyMember.find({ userId })
+            console.log(familyList)
+
+            const findRoom = await Room.find({ familyId: familyList[0].familyId })
+            console.log(22, findRoom)
+            // console.log(33, findRoom[0].familyMemberList[0].userId)
+            const findRoomId = findRoom
             socket.join(findRoomId)
             console.log("socket.rooms =>", socket.rooms)
         }));
