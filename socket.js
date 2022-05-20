@@ -63,7 +63,7 @@ module.exports = (server) => {
 
         socket.on("newRoom", (async (roomName, userId) => {
             console.log("userId", userId)
-            const findRoom = await Room.findOne({ hostId: userId })
+            const findRoom = await Room.find({ hostId: userId })
             console.log("findRoom", findRoom)
             const roomFamilyId = findRoom.familyId
             console.log("roomFamilyId", roomFamilyId)
@@ -90,9 +90,15 @@ module.exports = (server) => {
         }));
         // Users.find().all([{ name: 'zerocho' }, { age: 24 }]);
 
-        socket.on("inviteMember", ({ familyId, familyMemberNickname, selectEmail }) => {
+        socket.on("inviteMember", (async ({ familyId, familyMemberNickname, selectEmail }) => {
             console.log("5555", familyId, familyMemberNickname, selectEmail)
-        })
+
+            const findUser = await User.find({ email: selectEmail })
+            console.log("findUser", findUser)
+
+
+
+        }))
 
 
 
