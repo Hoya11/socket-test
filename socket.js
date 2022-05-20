@@ -89,6 +89,8 @@ module.exports = (server) => {
 
         socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
             const receiver = getUser(receiverName);
+            console.log("getUser", getUser)
+            console.log("receiver", receiver)
             // const date = new Date();
             io.to(receiver.socketId).emit("getNotification", {
                 senderName,
