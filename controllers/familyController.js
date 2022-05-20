@@ -195,13 +195,14 @@ const createFamilyMember = async (req, res) => {
       todayMood,
     })
 
-
-
-
+    const findRoom = await Room.find({ familyId })
+    console.log(findRoom)
+    const pushRoomMember = findRoom.familyMemberList.push({ userId: familyMember.userId, userNickname: familyMember.familyMemberNickname })
 
     res.status(201).json({
       restult: true,
       familyMember,
+      pushRoomMember
     })
   } catch (error) {
     console.log("멤버 생성에서 오류!", error)
