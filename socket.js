@@ -87,6 +87,13 @@ module.exports = (server) => {
         }));
         // Users.find().all([{ name: 'zerocho' }, { age: 24 }]);
 
+        socket.on("inviteMember", ({ familyId, familyMemberNickname, selectEmail }) => {
+            console.log("5555", familyId, familyMemberNickname, selectEmail)
+        })
+
+
+
+
         socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
             const receiver = getUser(receiverName);
             console.log("getUser", getUser)
