@@ -61,16 +61,17 @@ module.exports = (server) => {
         });
 
         socket.on("newRoom", (async (roomName, userId) => {
-            const findRoom = await Room.findOne({ userId: userId })
+            const findRoom = await Room.find({ userId: userId })
             const findRoomId = findRoom.roomId
             socket.join(findRoomId)
             console.log("socket.rooms =>", socket.rooms)
         }));
 
         socket.on("join", (async (userId) => {
-            const findRoom = await Room.findOne({ userId: userId })
-            console.log(222, findRoom)
+            const findRoom = await Room.find({ userId: userId })
+            console.log(222, findRoomId)
             const findRoomId = findRoom.roomId
+            console.log(333, findRoomId)
             socket.join(findRoomId)
             console.log("socket.rooms =>", socket.rooms)
         }));
@@ -84,7 +85,7 @@ module.exports = (server) => {
                 category,
             });
             console.log(33, senderName, type, category)
-            console.log(44, receiver)
+            console.log(44, receiver, getNotification)
         });
 
 
