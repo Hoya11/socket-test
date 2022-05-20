@@ -71,7 +71,7 @@ module.exports = (server) => {
             console.log(findRoomId)
 
 
-            socket.join(roomName)
+            socket.join(findRoomId)
             console.log(socket.id)
             console.log("socket.rooms =>", socket.rooms)
             // console.log("roomId=>", roomName)
