@@ -75,7 +75,7 @@ module.exports = (server) => {
             socket.join(findRoomId)
             console.log("socket.rooms =>", socket.rooms)
         }));
-        Users.find().all([{ name: 'zerocho' }, { age: 24 }]);
+        // Users.find().all([{ name: 'zerocho' }, { age: 24 }]);
 
         socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
             const receiver = getUser(receiverName);
