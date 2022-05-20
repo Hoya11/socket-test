@@ -63,6 +63,7 @@ module.exports = (server) => {
         })
 
         socket.on("newRoom", (roomName) => {
+            console.log(socket.id)
             socket.join(roomName)
             console.log(socket.id)
             console.log("socket.rooms =>", socket.rooms)
