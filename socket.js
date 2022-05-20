@@ -58,21 +58,32 @@ module.exports = (server) => {
         socket.on("newUser", userId => {
             addNewUser(userId, socket.id)
             console.log(111, userId, socket.id)
-        })
+        });
 
         socket.on("newRoom", (async (roomName, userId) => {
-            const findRoom = await Room.findOne({ userId })
+            const findRoom = await Room.findOne({ userId: userId })
             const findRoomId = findRoom.roomId
             socket.join(findRoomId)
             console.log("socket.rooms =>", socket.rooms)
         }));
+
         socket.on("join", (async (userId) => {
-            const findRoom = await Room.findOne({ userId })
+            const findRoom = await Room.findOne({ userId: userId })
             const findRoomId = findRoom.roomId
             socket.join(findRoomId)
             console.log("socket.rooms =>", socket.rooms)
-        }))
+        }));
 
+        socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
+            const receiver = getUser(receiverName);
+            io.to(receiver.socketId).emit("getNotification", {
+                senderName,
+                type,
+                category
+            });
+            console.log(33, senderName, type, category)
+            console.log(44, receiver)
+        });
 
 
         // socket.on("addRoomMember", ({ roomName, }))
