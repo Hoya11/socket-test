@@ -19,31 +19,39 @@ module.exports = (server) => {
     const room = io.of('/room')
 
 
+    let onlineUsers = [];
+
+    const addNewUser = (userId, socketId) => {
+        !onlineUsers.some((user) => user.userId === userId) &&
+            onlineUsers.push({ userId, socketId });
+        // console.log(11, socketId)
+        // console.log(22, onlineUsers)
+    };
+
+    const removeUser = (socketId) => {
+        onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
+    };
+
+    const getUser = (userId) => {
+        return onlineUsers.find((user) => user.userId === userId);
+    };
+
+    // io.use(async (SocketIO, next) => {
+    //     const userInfo = SocketIO.handshake.auth.user;
+    //     console.log("use =>", userInfo);
+
+    //     const session = await Room.findOne({ userId: userInfo.userId })
+    //     console.log("session =>", session);
+    //     const { userId } = userInfo;
+    // })
+
     //* 웹소켓 연결 시
     io.on("connection", (socket) => {
 
 
-        let onlineUsers = [];
-
-        const addNewUser = (username, socketId) => {
-            !onlineUsers.some((user) => user.username === username) &&
-                onlineUsers.push({ username, socketId });
-            // console.log(11, socketId)
-            // console.log(22, onlineUsers)
-        };
-
-        const removeUser = (socketId) => {
-            onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
-        };
-
-        const getUser = (username) => {
-            return onlineUsers.find((user) => user.username === username);
-        };
-
-
-        socket.on("newUser", username => {
-            addNewUser(username, socket.id)
-            console.log(111, username, socket.id)
+        socket.on("newUser", userId => {
+            addNewUser(userId, socket.id)
+            console.log(111, userId, socket.id)
         })
 
         socket.on("newRoom", (roomName) => {
