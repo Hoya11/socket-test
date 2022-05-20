@@ -69,13 +69,13 @@ module.exports = (server) => {
         }));
 
         socket.on("join", (async (userId) => {
-            const findRoom = await Room.find({ "familyMemberList": { "$eleMatch": { userId } } })
+            const findRoom = await Room.find.all([{ userId: familyMemberList.userId }]);
             console.log(222, findRoom)
             const findRoomId = findRoom.roomId
             socket.join(findRoomId)
             console.log("socket.rooms =>", socket.rooms)
         }));
-
+        Users.find().all([{ name: 'zerocho' }, { age: 24 }]);
 
         socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
             const receiver = getUser(receiverName);
