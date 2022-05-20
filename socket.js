@@ -66,6 +66,7 @@ module.exports = (server) => {
             socket.join(roomName)
             socket.emit('rooms', _.keys(io.sockets.manager.rooms));
             console.log("socket.rooms =>", socket.rooms)
+            console.log('rooms', _.keys(io.sockets.manager.rooms))
             // console.log("roomId=>", roomName)
         });
 
