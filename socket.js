@@ -46,7 +46,16 @@ module.exports = (server) => {
     // })
 
     //* 웹소켓 연결 시
-    io.on("connection", (socket) => {
+    room.on("connection", (socket) => {
+
+
+        const req = socket.request;
+        const {
+            headers: { referer },
+        } = req;
+
+        const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
+
 
 
         socket.on("newUser", userId => {
@@ -57,6 +66,7 @@ module.exports = (server) => {
         socket.on("newRoom", (roomName) => {
             socket.join(roomName)
             console.log("socket.rooms =>", socket.rooms)
+            console.log()
         });
 
         // socket.on("addRoomMember", ({ roomName, }))
