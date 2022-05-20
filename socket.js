@@ -48,25 +48,22 @@ module.exports = (server) => {
     //* 웹소켓 연결 시
     room.on("connection", (socket) => {
 
+        const req = socket.request;
+        const {
+            headers: { referer },
+        } = req;
 
-        // const req = socket.request;
-        // const {
-        //     headers: { referer },
-        // } = req;
-
-        // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
-
-
+        const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
 
         socket.on("newUser", userId => {
             addNewUser(userId, socket.id)
             console.log(111, userId, socket.id)
         })
 
-        socket.on("newRoom", (roomName) => {
-            socket.join(roomName)
+        socket.on("newRoom", (roomId) => {
+            socket.join(roomId)
             console.log("socket.rooms =>", socket.rooms)
-            console.log()
+            console.log("roomId=>", roomId)
         });
 
         // socket.on("addRoomMember", ({ roomName, }))
