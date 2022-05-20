@@ -92,15 +92,19 @@ module.exports = (server) => {
 
         socket.on("inviteMember", (async ({ familyId, familyMemberNickname, selectEmail }) => {
             console.log("5555", familyId, familyMemberNickname, selectEmail)
-
             const findUser = await User.find({ email: selectEmail })
-            console.log("findUser", findUser)
 
-            io.to(findUser.userId).emit("inviteMsg", {
+            const receiver = getUser(findUser.userId)
+
+
+            console.log("findUser", findUser)
+            console.log("receiver", receiver)
+
+
+            io.to(receiver.socketId).emit("inviteMsg", {
                 familyId,
                 familyMemberNickname
             })
-
         }))
 
 
