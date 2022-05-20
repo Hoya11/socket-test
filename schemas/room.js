@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { array } = require("../middlewares/upload");
 
 const roomSchema = mongoose.Schema({
     familyId: {
