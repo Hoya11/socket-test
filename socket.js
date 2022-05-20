@@ -117,9 +117,9 @@ module.exports = (server) => {
 
         //초대 수락버튼 클릭 시 
         socket.on("inviteJoin", (async (userId, familyId, familyMemberNickname) => {
-            console.log(familyId)
+            console.log("familyId =>", familyId, userId, familyMemberNickname)
             const findRoom = await Room.findOne({ familyId: familyId })
-            console.log("111", findRoom)
+            console.log("findRoom =>", findRoom)
 
             if (findRoom) {
                 await Room.updateOne(
