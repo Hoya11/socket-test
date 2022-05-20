@@ -47,8 +47,6 @@ module.exports = (server) => {
 
     //* 웹소켓 연결 시
     room.on("connection", (socket) => {
-
-
         // const req = socket.request;
         // const {
         //     headers: { referer },
@@ -63,25 +61,15 @@ module.exports = (server) => {
         })
 
         socket.on("newRoom", (async (roomName, userId) => {
-
-
-
             const findRoom = await Room.findOne({ userId })
             const findRoomId = findRoom.roomId
-
             socket.join(findRoomId)
-            console.log(socket.id)
             console.log("socket.rooms =>", socket.rooms)
-            // console.log("roomId=>", roomName)
-
-
         }));
         socket.on("join", (async (userId) => {
             const findRoom = await Room.findOne({ userId })
             const findRoomId = findRoom.roomId
-
             socket.join(findRoomId)
-            console.log(socket.id)
             console.log("socket.rooms =>", socket.rooms)
         }))
 

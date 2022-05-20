@@ -72,10 +72,10 @@ const createFamily = async (req, res) => {
     })
 
 
-
     const newRoom = await Room.create({
       familyId: newFamily.familyId,
-      userId: user.userId,
+      hostId: user.userId,
+      familyMemberList: [{ userId: user.userId, userNickname: user.nickname }]
     })
 
     const familyHost = await FamilyMember.create({
@@ -192,6 +192,7 @@ const createFamilyMember = async (req, res) => {
       profileImg,
       todayMood,
     })
+
 
     res.status(201).json({
       restult: true,
