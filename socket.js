@@ -66,8 +66,8 @@ module.exports = (server) => {
             console.log(userId)
 
             const findRoom = await Room.findOne({ userId })
-            const findRoomId = findRoom._id.split('"')
-            console.log(findRoomId)
+            const findRoomId = findRoom._id
+            console.log(findRoomId.split('"'))
 
             socket.join(roomName)
             console.log(socket.id)
