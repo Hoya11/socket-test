@@ -75,15 +75,15 @@ module.exports = (server) => {
 
         //로그인 버튼 클릭 시
         socket.on("join", (async (userId) => {
-            console.log(userId)
+            console.log("userId =>", userId)
             const familyList = await FamilyMember.find({ userId: userId })
-            console.log(familyList)
+            console.log("familyList =>", familyList)
 
             const familyId = familyList[0].familyId
-            console.log(familyId)
+            console.log("familyId =>", familyId)
 
-            const findRoom = await Room.findOne({ familyId })
-            console.log(22, findRoom)
+            // const findRoom = await Room.findOne({ familyId })
+            // console.log(22, findRoom)
 
             // const roomId = findRoom.roomId
 
