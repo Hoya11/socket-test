@@ -96,7 +96,10 @@ module.exports = (server) => {
             const findUser = await User.find({ email: selectEmail })
             console.log("findUser", findUser)
 
-
+            io.to(findUser.userId).emit("inviteMsg", {
+                familyId,
+                familyMemberNickname
+            })
 
         }))
 
