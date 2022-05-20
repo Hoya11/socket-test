@@ -59,41 +59,49 @@ module.exports = (server) => {
         socket.on("newUser", userId => {
             addNewUser(userId, socket.id)
             console.log(111, userId, socket.id)
-        });
 
-        socket.on("newRoom", (async (roomName, userId) => {
-            const findRoom = await Room.find({ userId: userId })
-            const findRoomId = findRoom.roomId
-            socket.join(findRoomId)
-            console.log("socket.rooms =>", socket.rooms)
-        }));
+            socket.on("newRoom", (async (roomName, userId) => {
+                const findRoom = await Room.find({ userId: userId })
+                const findRoomId = findRoom.roomId
+                socket.join(findRoomId)
+                console.log("socket.rooms =>", socket.rooms)
+            }));
 
-        socket.on("join", (async (userId) => {
-            console.log(userId)
-            const familyList = await FamilyMember.find({ userId: userId })
-            console.log(familyList)
+            socket.on("join", (async (userId) => {
+                console.log(userId)
+                const familyList = await FamilyMember.find({ userId: userId })
+                console.log(familyList)
 
-            const findRoom = await Room.find({ familyId: familyList[0].familyId })
-            console.log(22, findRoom)
-            // console.log(33, findRoom[0].familyMemberList[0].userId)
-            const findRoomId = findRoom
-            socket.join(findRoomId)
-            console.log("socket.rooms =>", socket.rooms)
-        }));
-        // Users.find().all([{ name: 'zerocho' }, { age: 24 }]);
+                const familyId = familyList[0].familyId
+                console.log(familyId)
 
-        socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
-            const receiver = getUser(receiverName);
-            // const date = new Date();
-            io.to(receiver.socketId).emit("getNotification", {
-                senderName,
-                type,
-                category,
+                const findRoom = await Room.findOne({ familyId })
+                console.log(22, findRoom)
 
+                // const roomId = findRoom.roomId
+
+                // const findRoomId = roomId
+                socket.join(familyId)
+                console.log("socket.rooms =>", socket.rooms)
+            }));
+            // Users.find().all([{ name: 'zerocho' }, { age: 24 }]);
+
+            socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
+                const receiver = getUser(receiverName);
+                // const date = new Date();
+                io.to(receiver.socketId).emit("getNotification", {
+                    senderName,
+                    type,
+                    category,
+
+                });
+                console.log(33, senderName, type, category)
+                console.log(44, receiver)
             });
-            console.log(33, senderName, type, category)
-            console.log(44, receiver)
+
         });
+
+
 
         socket.on("sendText", ({ senderName, receiverName, text }) => {
             const receiver = getUser(receiverName);
