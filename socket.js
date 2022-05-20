@@ -95,7 +95,7 @@ module.exports = (server) => {
             const findUser = await User.findOne({ email: selectEmail })
             console.log("findUser", findUser)
 
-            const receiver = getUser(findUser._id)
+            const receiver = getUser(findUser.userId)
 
 
             console.log("receiver", receiver)
