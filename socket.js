@@ -63,7 +63,9 @@ module.exports = (server) => {
 
         socket.on("newRoom", (async (roomName, userId) => {
             const findRoom = await Room.find({ hostId: userId })
+            console.log(findRoom)
             const roomFamilyId = findRoom.familyId
+            console.log(roomFamilyId)
             socket.join(roomFamilyId)
             console.log("socket.rooms =>", socket.rooms)
         }));
