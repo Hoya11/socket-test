@@ -70,7 +70,7 @@ module.exports = (server) => {
 
         socket.on("join", (async (userId) => {
 
-            const familyList = await FamilyMember.find({ userId })
+            const familyList = await FamilyMember.find({ userId: userId })
             console.log(familyList)
 
             const findRoom = await Room.find({ familyId: familyList[0].familyId })
