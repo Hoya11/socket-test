@@ -76,7 +76,7 @@ module.exports = (server) => {
         //로그인 버튼 클릭 시
         socket.on("join", (async (userId) => {
             console.log("userId =>", userId)
-            const familyList = await FamilyMember.find(userId)
+            const familyList = await FamilyMember.find({ userId: userId })
             console.log("familyList =>", familyList)
 
             const familyId = familyList[0].familyId
@@ -91,6 +91,9 @@ module.exports = (server) => {
             socket.join(familyId)
             console.log("socket.rooms =>", socket.rooms)
         }));
+
+
+
         // Users.find().all([{ name: 'zerocho' }, { age: 24 }]);
 
         //가족 멤버 초대
@@ -109,6 +112,26 @@ module.exports = (server) => {
                 category: "가족 초대",
             })
         }));
+
+        //초대 수락버튼 클릭 시 
+        socket.on("inviteJoin", (async (userId) => {
+            console.log("userId =>", userId)
+            const familyList = await FamilyMember.find(userId)
+            console.log("familyList =>", familyList)
+
+            const familyId = familyList[0].familyId
+            console.log("familyId =>", familyId)
+
+            // const findRoom = await Room.findOne({ familyId })
+            // console.log(22, findRoom)
+
+            // const roomId = findRoom.roomId
+
+            // const findRoomId = roomId
+            socket.join(familyId)
+            console.log("socket.rooms =>", socket.rooms)
+        }));
+
 
         // const inviteAlert = await Alert.create({
         //     familyId,
