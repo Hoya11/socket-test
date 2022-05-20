@@ -69,7 +69,7 @@ module.exports = (server) => {
         }));
 
         socket.on("join", (async (userId) => {
-            const findRoom = await Room.familyMemberList.find((x) => { x.userId === userId })
+            const findRoom = await Room.familyMemberList.findOne((x) => { x.userId === userId })
             console.log(222, findRoom)
             const findRoomId = findRoom.roomId
             socket.join(findRoomId)
