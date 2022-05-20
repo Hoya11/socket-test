@@ -143,17 +143,17 @@ const createFamilyMember = async (req, res) => {
     const { familyId } = req.params
     let { email, familyMemberNickname } =
       await familyMemberSchema.validateAsync(req.body)
-    console.log(1, email, familyMemberNickname)
+    // console.log(1, email, familyMemberNickname)
 
     const newFamilyMember = await User.findOne({ email })
     const userId = newFamilyMember.userId
     let todayMood
     if (newFamilyMember.snsId && todayMood === null) {
       todayMood = null
-      console.log(2, newFamilyMember, userId, todayMood)
+      // console.log(2, newFamilyMember, userId, todayMood)
     } else {
       todayMood = newFamilyMember.todayMood
-      console.log(3, newFamilyMember, userId, todayMood)
+      // console.log(3, newFamilyMember, userId, todayMood)
     }
 
     const existMember = await FamilyMember.findOne({

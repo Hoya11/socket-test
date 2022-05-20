@@ -110,14 +110,14 @@ module.exports = (server) => {
                 category: "가족 초대",
             })
 
-            const inviteAlert = await Alert.create({
-                familyId,
-                familyMemberNickname,
-                type,
-                category,
-            })
-            console.log("inviteAlert", inviteAlert);
-            next();
+            // const inviteAlert = await Alert.create({
+            //     familyId,
+            //     familyMemberNickname,
+            //     type,
+            //     category,
+            // })
+            // console.log("inviteAlert", inviteAlert);
+            // next();
         }));
 
 
