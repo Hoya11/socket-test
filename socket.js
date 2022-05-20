@@ -3,6 +3,7 @@ const SocketIO = require('socket.io');
 const User = require('./schemas/user')
 const Room = require('./schemas/room');
 const FamilyMember = require('./schemas/familyMember');
+const Alert = require('./schemas/alert')
 
 module.exports = (server) => {
     // 서버 연결, path는 프론트와 일치시켜준다.
@@ -93,20 +94,19 @@ module.exports = (server) => {
         // Users.find().all([{ name: 'zerocho' }, { age: 24 }]);
 
         //가족 멤버 초대
-        socket.on("inviteMember", (async ({ familyId, familyMemberNickname, selectEmail, type }) => {
+        socket.on("inviteMember", (async ({ familyId, familyMemberNickname, selectEmail, type, category }) => {
             console.log("5555", familyId, familyMemberNickname, selectEmail, type)
-
-
-
             const findUser = await User.findOne({ email: selectEmail })
             console.log("findUser", findUser)
+
 
             const receiver = getUser(findUser.userId)
             console.log("receiver", receiver)
             io.to(receiver.socketId).emit("inviteMsg", {
                 familyId,
                 familyMemberNickname,
-                type: "초대"
+                type: "초대",
+                category: "가족 초대"
             })
         }))
 

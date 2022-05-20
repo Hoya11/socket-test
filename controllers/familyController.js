@@ -14,6 +14,7 @@ const VoiceFile = require("../schemas/voiceFile")
 const Like = require("../schemas/like")
 const Joi = require("joi")
 const Room = require('../schemas/room')
+const Alert = require('../schemas/alert')
 
 const familySchema = Joi.object({
   familyTitle: Joi.string()
@@ -193,6 +194,7 @@ const createFamilyMember = async (req, res) => {
       profileImg,
       todayMood,
     })
+
 
 
 
