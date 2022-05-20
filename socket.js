@@ -108,7 +108,6 @@ module.exports = (server) => {
                 type: "초대",
                 category: "가족 초대",
             })
-
         }));
 
         // const inviteAlert = await Alert.create({
