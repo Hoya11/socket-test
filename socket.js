@@ -2,6 +2,7 @@ const SocketIO = require('socket.io');
 // const ios = require('express-socket.io-session');
 const User = require('./schemas/user')
 const Room = require('./schemas/room');
+const familyMember = require('./schemas/familyMember');
 
 module.exports = (server) => {
     // 서버 연결, path는 프론트와 일치시켜준다.
@@ -68,12 +69,13 @@ module.exports = (server) => {
         }));
 
         socket.on("join", (async (userId) => {
-            const findRoom = await Room.find({ usrId: [familyMemberList.userId] })
+            const findRoom = await Room.find({ $pull: { userId: familyMemberList.userId } })
             console.log(222, findRoom)
             const findRoomId = findRoom.roomId
             socket.join(findRoomId)
             console.log("socket.rooms =>", socket.rooms)
         }));
+
 
         socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
             const receiver = getUser(receiverName);
@@ -87,22 +89,6 @@ module.exports = (server) => {
             console.log(33, senderName, type, category)
             console.log(44, receiver)
         });
-
-
-        // socket.on("addRoomMember", ({ roomName, }))
-
-
-        socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
-            const receiver = getUser(receiverName);
-            io.to(receiver.socketId).emit("getNotification", {
-                senderName,
-                type,
-                category
-            });
-            console.log(33, senderName, type, category)
-            console.log(44, receiver)
-        });
-
 
         socket.on("sendText", ({ senderName, receiverName, text }) => {
             const receiver = getUser(receiverName);
