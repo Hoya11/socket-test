@@ -61,6 +61,7 @@ module.exports = (server) => {
             console.log(111, userId, socket.id)
         });
 
+        //회원가입 후 처음 가족 생성할 때
         socket.on("newRoom", (async (roomName, userId) => {
             console.log("userId", userId)
             const findRoom = await Room.find({ hostId: userId })
@@ -71,6 +72,7 @@ module.exports = (server) => {
             console.log("socket.rooms =>", socket.rooms)
         }));
 
+        //로그인 버튼 클릭 시
         socket.on("join", (async (userId) => {
             console.log(userId)
             const familyList = await FamilyMember.find({ userId: userId })
@@ -90,8 +92,12 @@ module.exports = (server) => {
         }));
         // Users.find().all([{ name: 'zerocho' }, { age: 24 }]);
 
-        socket.on("inviteMember", (async ({ familyId, familyMemberNickname, selectEmail }) => {
-            console.log("5555", familyId, familyMemberNickname, selectEmail)
+        //가족 멤버 초대
+        socket.on("inviteMember", (async ({ familyId, familyMemberNickname, selectEmail, type }) => {
+            console.log("5555", familyId, familyMemberNickname, selectEmail, type)
+
+
+
             const findUser = await User.findOne({ email: selectEmail })
             console.log("findUser", findUser)
 
@@ -99,11 +105,10 @@ module.exports = (server) => {
             console.log("receiver", receiver)
             io.to(receiver.socketId).emit("inviteMsg", {
                 familyId,
-                familyMemberNickname
+                familyMemberNickname,
+                type: "초대"
             })
         }))
-
-
 
 
         socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
@@ -115,11 +120,11 @@ module.exports = (server) => {
                 senderName,
                 type,
                 category,
-
             });
             console.log(33, senderName, type, category)
             console.log(44, receiver)
         });
+
 
         socket.on("sendText", ({ senderName, receiverName, text }) => {
             const receiver = getUser(receiverName);

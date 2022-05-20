@@ -1,24 +1,30 @@
 const mongoose = require("mongoose")
 
 const alertSchema = mongoose.Schema({
-    senderName: {
+    userId: {
         type: String,
-    }, //좋아요 누르거나 댓글 작성한 사람의 닉네임
-    receiverName: {
+    },
+    familyMemberNickname: {
         type: String,
-    }, //좋아요 및 댓글이 추가된 게시물의 userId
+    },
     category: {
         type: String,
-    }, //좋아요 및 댓글이 추가된 게시물의 카테고리
+    },
     type: {
         type: String,
         required: true,
-    }, //알림의 type. "좋아요" 와 "댓글"
-    date: {
+    },
+    createdAt: {
         type: Date,
-        default: Date.now,
-    }, // 좋아요 및 댓글이 추가된 날짜 및 시간
+    },
+})
+
+alertSchema.virtual("alertId").get(function () {
+    return this._id.toHexString()
+})
+
+alertSchema.set("toJSON", {
+    virtuals: true,
 })
 
 module.exports = mongoose.model("Alert", alertSchema)
-//alertId는 socketId로 대신한다.
