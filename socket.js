@@ -47,7 +47,7 @@ module.exports = (server) => {
     // })
 
     //* 웹소켓 연결 시
-    room.on("connection", (socket) => {
+    io.on("connection", (socket) => {
         // const req = socket.request;
         // const {
         //     headers: { referer },
@@ -96,11 +96,7 @@ module.exports = (server) => {
             console.log("findUser", findUser)
 
             const receiver = getUser(findUser.userId)
-
-
             console.log("receiver", receiver)
-
-
             io.to(receiver.socketId).emit("inviteMsg", {
                 familyId,
                 familyMemberNickname
