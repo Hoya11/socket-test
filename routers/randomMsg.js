@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   postRandomMsg,
   deleteRandomMsg,
+  postRandomImg
 } = require('../controllers/randomMsgController');
 
 // 랜덤메시지 생성(내부용)
