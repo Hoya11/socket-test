@@ -192,6 +192,8 @@ module.exports = server => {
         }))
 
         socket.on("getFamilyNoti", async ({ userId, familyId }) => {
+            console.log("socket.rooms =>", socket.rooms)
+
             if (!userId) {
                 return
             } else {
