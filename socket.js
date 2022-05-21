@@ -179,7 +179,7 @@ module.exports = server => {
             })
 
             // invite 알림 이후에 바로 알림 DB에 생성 및 저장하며 실시간 알림에 보여주기.
-            io.to(receiverFamily).emit("getFamilyNoti", {
+            socket.to(receiverFamily).emit("getFamilyNoti", {
                 getFamilyNotiDB: [getFamilyNotiDB],
             })
         }))
