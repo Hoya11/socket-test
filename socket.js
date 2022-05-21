@@ -86,6 +86,8 @@ module.exports = server => {
         //가족리스트 클릭이동 시 
         socket.on("movingRoom", async (familyId) => {
             socket.leave(socket.rooms[1])
+            console.log("socket.rooms[1] => ", socket.rooms[1])
+
             console.log("familyId =>", familyId)
             const findFamilyId = familyId.familyId
             socket.join(findFamilyId)
