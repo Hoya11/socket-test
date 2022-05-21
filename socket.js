@@ -189,6 +189,8 @@ module.exports = server => {
 
 
 
+
+
         // 사진 추가 알림
         socket.on("sendFamilyNoti", (async ({ userId, senderName, receiverFamily, category, type }) => {
             // console.log("socket.rooms =>", socket.rooms)
@@ -222,7 +224,7 @@ module.exports = server => {
             // console.log("findUserAlertDB   ", findUserAlertDB)
 
             io.to(receiver.socketId).emit("notiReturn", {
-                findUserAlertDB: findUserAlertDB,
+                findAlertDB: findUserAlertDB,
             })
         })
 
