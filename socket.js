@@ -128,7 +128,7 @@ module.exports = (server) => {
                 category: "가족 초대",
                 type: "초대",
                 createdAt,
-            }).sort(-createdAt)
+            }).sort("-createdAt")
 
 
 
