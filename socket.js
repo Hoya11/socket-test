@@ -141,14 +141,6 @@ module.exports = server => {
             console.log("socket.rooms =>", socket.rooms)
         })
 
-        // const inviteAlert = await Alert.create({
-        //     familyId,
-        //     familyMemberNickname,
-        //     type,
-        //     category,
-        // })
-        // console.log("inviteAlert", inviteAlert);
-        // next();
 
         socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
             const receiver = getUser(receiverName)
@@ -167,17 +159,14 @@ module.exports = server => {
 
         socket.on("sendFamilyNoti", (async ({ senderName, receiverFamily, category, type }) => {
             console.log("무슨값오지?", senderName, receiverFamily, category, type)
-            const receiver = getUser(receiverFamily)
-            console.log("getUser", getUser)
-            console.log("receiver", receiver)
 
             // const date = new Date();
-            io.to(receiverFamily).emit("getFamilyNoti", {
-                senderName, //보내는 사람 이름
-                receiverFamily, // 현재 가족 Id
-                category,
-                type,
-            })
+            // io.to(receiverFamily).emit("getFamilyNoti", {
+            //     senderName, //보내는 사람 이름
+            //     receiverFamily, // 현재 가족 Id
+            //     category,
+            //     type,
+            // })
 
             //createdAt을 한국 시간대로 설정
             const cur_date = new Date()
@@ -199,6 +188,8 @@ module.exports = server => {
             io.to(receiverFamily).emit("getFamilyNoti", {
                 getFamilyNotiDB: [getFamilyNotiDB],
             })
+
+
         }))
 
 
