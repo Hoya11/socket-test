@@ -136,10 +136,7 @@ module.exports = server => {
 
         socket.on("getMyAlert", async ({ userId, type }) => {
 
-            if (!userId) {
-                return
-            } else {
-
+            if (userId == userId) {
                 // console.log("get 알림(userId) =>", userId)
                 // console.log("get 알림(type) =>", type)
                 const receiver = getUser(userId)
