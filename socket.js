@@ -168,22 +168,28 @@ module.exports = server => {
             // console.log("socket.rooms =>", socket.rooms)
         })
 
+        // 사진 좋아요 알림
+        socket.on("sendNotification", (async ({ userName, userId, type, category }) => {
+            console.log("sendNotification-userId =>", userId)
+            // const receiver = getUser(userId)
 
-        socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
-            const receiver = getUser(receiverName)
-            // console.log("getUser", getUser)
-            // console.log("receiver", receiver)
-            // const date = new Date();
-            io.to(receiver.socketId).emit("getNotification", {
-                senderName,
+            const cur_date = new Date()
+            const utc = cur_date.getTime() + cur_date.getTimezoneOffset() * 60 * 1000
+            const time_diff = 9 * 60 * 60 * 1000
+            const createdAt = new Date(utc + time_diff)
+
+            await Alert.create({
+                userName,
+                userId,
                 type,
                 category,
+                createdAt
             })
-        })
+        }))
 
 
 
-        //사진추가
+        // 사진 추가 알림
         socket.on("sendFamilyNoti", (async ({ userId, senderName, receiverFamily, category, type }) => {
             // console.log("socket.rooms =>", socket.rooms)
             socket.join(receiverFamily)
@@ -215,10 +221,9 @@ module.exports = server => {
             const findUserAlertDB = await Alert.find({ userId })
             // console.log("findUserAlertDB   ", findUserAlertDB)
 
-            io.to(receiver.socketId).emit("newInviteDB", {
+            io.to(receiver.socketId).emit("notiReturn", {
                 findUserAlertDB: findUserAlertDB,
             })
-
         })
 
 
