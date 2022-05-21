@@ -98,7 +98,7 @@ module.exports = (server) => {
 
         //가족 멤버 초대
         socket.on("inviteMember", (async ({ familyId, familyMemberNickname, selectEmail, nickname }) => {
-            console.log("5555", familyId, familyMemberNickname, selectEmail, type)
+            console.log("5555", familyId, familyMemberNickname, selectEmail)
             const findUser = await User.findOne({ email: selectEmail })
             console.log("findUser", findUser)
 
