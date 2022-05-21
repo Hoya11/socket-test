@@ -67,7 +67,7 @@ module.exports = server => {
             const roomFamilyId = findRoom.familyId
             // console.log("roomFamilyId", roomFamilyId)
             socket.join(roomFamilyId)
-            // console.log("socket.rooms =>", socket.rooms)
+            console.log("socket.rooms =>", socket.rooms)
         })
 
         //로그인 버튼 클릭 시
@@ -82,6 +82,7 @@ module.exports = server => {
             console.log("socket.rooms =>", socket.rooms)
         })
 
+        //가족리스트 클릭이동 시 
         socket.on("movingRoom", async (familyId) => {
             console.log("familyId =>", familyId)
             const findFamilyId = familyId.familyId
@@ -98,6 +99,7 @@ module.exports = server => {
             console.log("findUser", findUser)
 
             const receiver = getUser(findUser.userId)
+
 
             //createdAt을 한국 시간대로 설정
             const cur_date = new Date()
@@ -156,19 +158,16 @@ module.exports = server => {
             // console.log(44, receiver)
         })
 
-
+        //사진추가
         socket.on("sendFamilyNoti", (async ({ senderName, receiverFamily, category, type }) => {
+            console.log("socket.rooms =>", socket.rooms)
             socket.join(receiverFamily)
             console.log("무슨값오지?", senderName, receiverFamily, category, type)
-            console.log("socket.rooms =>", socket.rooms)
             //createdAt을 한국 시간대로 설정
             const cur_date = new Date()
             const utc = cur_date.getTime() + cur_date.getTimezoneOffset() * 60 * 1000
             const time_diff = 9 * 60 * 60 * 1000
             const createdAt = new Date(utc + time_diff)
-
-
-
 
             //alert DB
             //alert를 DB에 생성하는 API
