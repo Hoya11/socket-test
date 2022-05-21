@@ -75,8 +75,8 @@ module.exports = server => {
         socket.on("join", async (userId) => {
             // console.log("userId =>", userId)
             const findUserId = userId.userId
-            const familyList = await FamilyMember.find({ userId: findUserId })
             // console.log("familyList =>", familyList)
+            const familyList = await FamilyMember.find({ userId: findUserId })
             const familyId = familyList[0].familyId
 
             socket.join(familyId)
@@ -89,12 +89,16 @@ module.exports = server => {
             await socket.leave(nowFamilyId)
             console.log("leaveRoom.rooms =>", socket.rooms)
             //가족리스트 클릭이동 시 
-            socket.on("movingRoom", async (familyId) => {
-                console.log("familyId =>", familyId)
-                const findFamilyId = familyId.familyId
-                socket.join(findFamilyId)
-                console.log("socket.rooms =>", socket.rooms)
-            })
+            try {
+                socket.on("movingRoom", async (familyId) => {
+                    console.log("familyId =>", familyId)
+                    const findFamilyId = familyId.familyId
+                    socket.join(findFamilyId)
+                    console.log("socket.rooms =>", socket.rooms)
+                })
+            } catch (error) {
+                console.log(error)
+            }
         })
 
 
