@@ -211,28 +211,6 @@ module.exports = server => {
             })
         }))
 
-        // 사진 추가 알림
-        socket.on("sendFamilyNoti", (async ({ userId, senderName, receiverFamily, category, type }) => {
-            // console.log("socket.rooms =>", socket.rooms)
-            socket.join(receiverFamily)
-            // console.log("무슨값오지?", userId, senderName, receiverFamily, category, type)
-            //createdAt을 한국 시간대로 설정
-            const cur_date = new Date()
-            const utc = cur_date.getTime() + cur_date.getTimezoneOffset() * 60 * 1000
-            const time_diff = 9 * 60 * 60 * 1000
-            const createdAt = new Date(utc + time_diff)
-
-            //alert를 DB에 생성하는 API
-            await Alert.create({
-                userId,
-                familyId: receiverFamily,
-                category,
-                type,
-                nickname: senderName,
-                createdAt,
-            })
-        }))
-
         // socket.on("userConnect", async ({ userId }) => {
         //     console.log("userConnect-userId =>", userId)
         //     const receiver = getUser(userId)
@@ -246,6 +224,9 @@ module.exports = server => {
             // console.log("getFamilyNoti 알림(familyId) =>", familyId)
 
             const receiver = getUser(userId)
+
+            const findRoom = await Room.find({ familyMemberList: { $elemMatch: { userId: userId } } })
+            console.log(findRoom)
 
             console.log("getFamilyNoti receiver => ", receiver)
             const findUserAlertDB = await Alert.find({ userId })
