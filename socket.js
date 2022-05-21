@@ -114,7 +114,7 @@ module.exports = server => {
 
             //createdAt을 한국 시간대로 설정
             const cur_date = new Date()
-            const utc = cur_date.getTime() + cur_date.getTimezoneOffset() * 60 * 1000
+            const utc = cur_date.getTime() + (cur_date.getTimezoneOffset() * 60 * 1000)
             const time_diff = 9 * 60 * 60 * 1000
             const createdAt = new Date(utc + time_diff)
 
@@ -174,7 +174,7 @@ module.exports = server => {
             // const receiver = getUser(userId)
 
             const cur_date = new Date()
-            const utc = cur_date.getTime() + cur_date.getTimezoneOffset() * 60 * 1000
+            const utc = cur_date.getTime() + (cur_date.getTimezoneOffset() * 60 * 1000)
             const time_diff = 9 * 60 * 60 * 1000
             const createdAt = new Date(utc + time_diff)
 
@@ -196,7 +196,7 @@ module.exports = server => {
             // console.log("무슨값오지?", userId, senderName, receiverFamily, category, type)
             //createdAt을 한국 시간대로 설정
             const cur_date = new Date()
-            const utc = cur_date.getTime() + cur_date.getTimezoneOffset() * 60 * 1000
+            const utc = cur_date.getTime() + (cur_date.getTimezoneOffset() * 60 * 1000)
             const time_diff = 9 * 60 * 60 * 1000
             const createdAt = new Date(utc + time_diff)
 
@@ -226,7 +226,7 @@ module.exports = server => {
             const receiver = getUser(userId)
 
             const findRoom = await Room.find({ familyMemberList: { $elemMatch: { userId: userId } } })
-            console.log(findRoom)
+            // console.log(findRoom)
 
             console.log("getFamilyNoti receiver => ", receiver)
             const findUserAlertDB = await Alert.find({ userId })
