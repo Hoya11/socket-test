@@ -83,10 +83,15 @@ module.exports = server => {
             console.log("socket.rooms =>", socket.rooms)
         })
 
+
+        socket.on("leaveRoom", (familyId) => {
+            console.log("leaveRoom =>", familyId)
+            socket.leave(familyId)
+            console.log("leaveRoom.rooms =>", socket.rooms)
+        })
+
         //가족리스트 클릭이동 시 
         socket.on("movingRoom", async (familyId) => {
-            socket.leave(socket.rooms)
-
             console.log("familyId =>", familyId)
             const findFamilyId = familyId.familyId
             socket.join(findFamilyId)
