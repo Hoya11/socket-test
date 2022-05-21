@@ -158,6 +158,7 @@ module.exports = server => {
             // console.log(44, receiver)
         })
 
+
         //사진추가
         socket.on("sendFamilyNoti", (async ({ senderName, receiverFamily, category, type }) => {
             console.log("socket.rooms =>", socket.rooms)
@@ -198,6 +199,9 @@ module.exports = server => {
 
         socket.on("disconnect", () => {
             removeUser(socket.id)
+            console.log("연결끊어졌음")
         })
     })
 }
+
+
