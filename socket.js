@@ -112,7 +112,7 @@ module.exports = server => {
 
             //alert DB
             //alert를 DB에 생성하는 API
-            const newInviteDB = await Alert.create({
+            await Alert.create({
                 familyId,
                 userId: findUser.userId,
                 familyMemberNickname,
@@ -123,9 +123,16 @@ module.exports = server => {
                 createdAt,
             })
 
-            // invite 알림 이후에 바로 알림 DB에 생성 및 저장하며 실시간 알림에 보여주기.
+        })
+
+        socket.on("getMyAlert", async ({ userId, type }) => {
+            const receiver = getUser(userId)
+            console.log("receiver    ", receiver)
+            const findUserRoomDB = Room.find({ userId, type })
+            console.log("findUserRoomDB   ", findUserRoomDB)
+
             io.to(receiver.socketId).emit("newInviteDB", {
-                newInviteDB: [newInviteDB],
+                findUserRoomDB: [findUserRoomDB],
             })
         })
 
