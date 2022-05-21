@@ -158,6 +158,7 @@ module.exports = server => {
 
 
         socket.on("sendFamilyNoti", (async ({ senderName, receiverFamily, category, type }) => {
+            socket.join(receiverFamily)
             console.log("무슨값오지?", senderName, receiverFamily, category, type)
             console.log("socket.rooms =>", socket.rooms)
             //createdAt을 한국 시간대로 설정
