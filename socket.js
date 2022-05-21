@@ -235,20 +235,18 @@ module.exports = server => {
 
         // socket.on("userConnect", async ({ userId }) => {
         //     console.log("userConnect-userId =>", userId)
-
         //     const receiver = getUser(userId)
-
         //     const findUserConnect = await 
-
         // })
-
 
         // 알림
         socket.on("getFamilyNoti", async ({ userId }) => {
             console.log("getFamilyNoti rooms =>", socket.rooms)
             console.log("getFamilyNoti 알림(userId) =>", userId)
-            console.log("getFamilyNoti 알림(familyId) =>", familyId)
+            // console.log("getFamilyNoti 알림(familyId) =>", familyId)
+
             const receiver = getUser(userId)
+
             console.log("getFamilyNoti receiver => ", receiver)
             const findUserAlertDB = await Alert.find({ userId })
             console.log("findUserAlertDB   ", findUserAlertDB)
