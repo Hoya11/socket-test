@@ -118,11 +118,13 @@ module.exports = server => {
             //alert DB
             //alert를 DB에 생성하는 API
             const newInviteDB = await Alert.create({
-                userId: findUser.userId,
+                familyId,
                 familyMemberNickname,
-                category: "가족 초대",
+                selectEmail,
                 type: "초대",
-                createdAt,
+                category: "가족 초대",
+                userId: findUser.userId,
+                nickname,
             })
 
             // invite 알림 이후에 바로 알림 DB에 생성 및 저장하며 실시간 알림에 보여주기.
