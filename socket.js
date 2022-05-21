@@ -121,14 +121,14 @@ module.exports = (server) => {
             const findRoom = await Room.findOne({ familyId: familyId })
             console.log("findRoom =>", findRoom)
 
+            if (findRoom) {
+                await Room.updateOne(
+                    { familyId: familyId },
+                    { $push: { FamilyMemberList: [{ userId: userId, userNickname: familyMemberNickname }] } }
+                )
+            }
 
-            const a = await Room.updateOne(
-                { familyId: familyId },
-                { $push: { FamilyMemberList: { userId: userId, userNickname: familyMemberNickname } } }
-            )
-
-
-            console.log("222", a)
+            console.log("222", findRoom)
             socket.join(familyId)
             console.log("socket.rooms =>", socket.rooms)
         }));
