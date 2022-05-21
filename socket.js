@@ -68,19 +68,19 @@ module.exports = server => {
             const roomFamilyId = findRoom.familyId
             // console.log("roomFamilyId", roomFamilyId)
             socket.join(roomFamilyId)
-            console.log("socket.rooms =>", socket.rooms)
+            // console.log("socket.rooms =>", socket.rooms)
         })
 
         //로그인 버튼 클릭 시
         socket.on("join", async (userId) => {
-            console.log("userId =>", userId)
+            // console.log("userId =>", userId)
             const findUserId = userId.userId
             const familyList = await FamilyMember.find({ userId: findUserId })
             // console.log("familyList =>", familyList)
             const familyId = familyList[0].familyId
 
             socket.join(familyId)
-            console.log("socket.rooms =>", socket.rooms)
+            // console.log("socket.rooms =>", socket.rooms)
         })
 
 
@@ -102,9 +102,9 @@ module.exports = server => {
 
         //가족 멤버 초대
         socket.on("inviteMember", async ({ familyId, familyMemberNickname, selectEmail, nickname }) => {
-            console.log("5555", familyId, familyMemberNickname, selectEmail)
+            // console.log("5555", familyId, familyMemberNickname, selectEmail)
             const findUser = await User.findOne({ email: selectEmail })
-            console.log("findUser", findUser)
+            // console.log("findUser", findUser)
 
             const receiver = getUser(findUser.userId)
 
@@ -114,7 +114,7 @@ module.exports = server => {
             const time_diff = 9 * 60 * 60 * 1000
             const createdAt = new Date(utc + time_diff)
 
-            console.log("receiver", receiver)
+            // console.log("receiver", receiver)
 
             //alert DB
             //alert를 DB에 생성하는 API
@@ -132,10 +132,10 @@ module.exports = server => {
 
         socket.on("getMyAlert", async ({ userId, type }) => {
 
-            console.log("get 알림(userId) =>", userId)
-            console.log("get 알림(type) =>", type)
+            // console.log("get 알림(userId) =>", userId)
+            // console.log("get 알림(type) =>", type)
             const receiver = getUser(userId)
-            console.log("receiver    ", receiver)
+            // console.log("receiver    ", receiver)
             const findUserAlertDB = await Alert.find({ userId, type })
             // console.log("findUserAlertDB   ", findUserAlertDB)
 
@@ -149,24 +149,24 @@ module.exports = server => {
 
         //초대 수락버튼 클릭 시
         socket.on("inviteJoin", async ({ userId, familyId, familyMemberNickname }) => {
-            console.log("familyId =>", familyId, userId, familyMemberNickname)
+            // console.log("familyId =>", familyId, userId, familyMemberNickname)
             const findRoom = await Room.findOne({ familyId: familyId })
-            console.log("findRoom =>", findRoom)
+            // console.log("findRoom =>", findRoom)
 
             if (findRoom) {
                 await Room.updateOne({ familyId: familyId }, { $push: { familyMemberList: { userId: userId, userNickname: familyMemberNickname } } })
             }
 
-            console.log("222", findRoom)
+            // console.log("222", findRoom)
             socket.join(familyId)
-            console.log("socket.rooms =>", socket.rooms)
+            // console.log("socket.rooms =>", socket.rooms)
         })
 
 
         socket.on("sendNotification", ({ senderName, receiverName, type, category }) => {
             const receiver = getUser(receiverName)
-            console.log("getUser", getUser)
-            console.log("receiver", receiver)
+            // console.log("getUser", getUser)
+            // console.log("receiver", receiver)
             // const date = new Date();
             io.to(receiver.socketId).emit("getNotification", {
                 senderName,
@@ -179,9 +179,9 @@ module.exports = server => {
 
         //사진추가
         socket.on("sendFamilyNoti", (async ({ userId, senderName, receiverFamily, category, type }) => {
-            console.log("socket.rooms =>", socket.rooms)
+            // console.log("socket.rooms =>", socket.rooms)
             socket.join(receiverFamily)
-            console.log("무슨값오지?", userId, senderName, receiverFamily, category, type)
+            // console.log("무슨값오지?", userId, senderName, receiverFamily, category, type)
             //createdAt을 한국 시간대로 설정
             const cur_date = new Date()
             const utc = cur_date.getTime() + cur_date.getTimezoneOffset() * 60 * 1000
@@ -200,13 +200,13 @@ module.exports = server => {
         }))
 
         socket.on("getFamilyNoti", async ({ userId, familyId }) => {
-            console.log("getFamilyNoti rooms =>", socket.rooms)
+            // console.log("getFamilyNoti rooms =>", socket.rooms)
 
 
-            console.log("get 알림(userId) =>", userId)
-            console.log("get 알림(familyId) =>", familyId)
+            // console.log("get 알림(userId) =>", userId)
+            // console.log("get 알림(familyId) =>", familyId)
             const receiver = getUser(userId)
-            console.log("receiver    ", receiver)
+            // console.log("receiver    ", receiver)
             const findUserAlertDB = await Alert.find({ userId, familyId })
             // console.log("findUserAlertDB   ", findUserAlertDB)
 
