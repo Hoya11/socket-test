@@ -103,6 +103,7 @@ module.exports = (server) => {
             console.log("findUser", findUser)
 
             const receiver = getUser(findUser.userId)
+
             console.log("receiver", receiver)
             io.to(receiver.socketId).emit("inviteMsg", {
                 familyId,
@@ -113,7 +114,29 @@ module.exports = (server) => {
                 userId: findUser.userId,
                 nickname
             })
+            //alert DB
+            //alert를 DB에 생성하는 API
+            const newInviteDB = await new Alert({
+                userId: findUser.userId,
+                familyMemberNickname,
+                category,
+                type,
+                createdAt: createdAt,
+            }).sort(-createdAt)
+
+            //createdAt을 한국 시간대로 설정
+            const cur_date = new Date()
+            const utc = cur_date.getTime() + cur_date.getTimezoneOffset() * 60 * 1000
+            const time_diff = 9 * 60 * 60 * 1000
+            const createdAt = new Date(utc + time_diff)
+
+            // invite 알림 이후에 바로 알림 DB에 생성 및 저장하며 실시간 알림에 보여주기.
+            io.to(receiver.socketId).emit("newInviteDB", {
+                newInviteDB: newInviteDB,
+            })
         }));
+
+
 
         //초대 수락버튼 클릭 시 
         socket.on("inviteJoin", (async ({ userId, familyId, familyMemberNickname }) => {
