@@ -225,7 +225,7 @@ module.exports = server => {
 
             const receiver = getUser(userId)
 
-            const findRoom = await Room.find({ familyMemberList: { $elemMatch: { userId: userId } } })
+            const findRoom = await Room.find({ familyMemberList: { $all: { userId: userId } } })
             // console.log(findRoom)
 
             console.log("getFamilyNoti receiver => ", receiver)
