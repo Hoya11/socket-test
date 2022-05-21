@@ -73,7 +73,7 @@ module.exports = server => {
         //로그인 버튼 클릭 시
         socket.on("join", async (userId) => {
             console.log("userId =>", userId)
-            const familyList = await FamilyMember.find({ userId: userId })
+            const familyList = await FamilyMember.find(userId)
             console.log("familyList =>", familyList)
             const familyId = familyList[0].familyId
 
