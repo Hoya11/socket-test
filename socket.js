@@ -56,28 +56,28 @@ module.exports = server => {
 
         socket.on("newUser", userId => {
             addNewUser(userId, socket.id)
-            console.log(111, userId, socket.id)
+            // console.log(111, userId, socket.id)
         })
 
         //회원가입 후 처음 가족 생성할 때
         socket.on("newRoom", async (roomName, userId) => {
-            console.log("userId", userId)
+            // console.log("userId", userId)
             const findRoom = await Room.find({ hostId: userId })
-            console.log("findRoom", findRoom)
+            // console.log("findRoom", findRoom)
             const roomFamilyId = findRoom.familyId
-            console.log("roomFamilyId", roomFamilyId)
+            // console.log("roomFamilyId", roomFamilyId)
             socket.join(roomFamilyId)
-            console.log("socket.rooms =>", socket.rooms)
+            // console.log("socket.rooms =>", socket.rooms)
         })
 
         //로그인 버튼 클릭 시
         socket.on("join", async userId => {
-            console.log("userId =>", userId)
+            // console.log("userId =>", userId)
             const familyList = await FamilyMember.find({ userId: userId })
-            console.log("familyList =>", familyList)
+            // console.log("familyList =>", familyList)
 
             const familyId = familyList[0].familyId
-            console.log("familyId =>", familyId)
+            // console.log("familyId =>", familyId)
 
             // const findRoom = await Room.findOne({ familyId })
             // console.log(22, findRoom)
@@ -152,8 +152,8 @@ module.exports = server => {
                 type,
                 category,
             })
-            console.log(33, senderName, type, category)
-            console.log(44, receiver)
+            // console.log(33, senderName, type, category)
+            // console.log(44, receiver)
         })
 
 
