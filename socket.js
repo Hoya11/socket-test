@@ -84,19 +84,19 @@ module.exports = server => {
         })
 
 
-        socket.on("leaveRoom", async (familyId) => {
-            console.log("leaveRoom =>", familyId)
-            await socket.leave(familyId)
+        socket.on("leaveRoom", async (nowFamilyId) => {
+            console.log("leaveRoom =>", nowFamilyId)
+            await socket.leave(nowFamilyId)
             console.log("leaveRoom.rooms =>", socket.rooms)
+            //가족리스트 클릭이동 시 
+            socket.on("movingRoom", async (familyId) => {
+                console.log("familyId =>", familyId)
+                const findFamilyId = familyId.familyId
+                socket.join(findFamilyId)
+                console.log("socket.rooms =>", socket.rooms)
+            })
         })
 
-        //가족리스트 클릭이동 시 
-        socket.on("movingRoom", async (familyId) => {
-            console.log("familyId =>", familyId)
-            const findFamilyId = familyId.familyId
-            socket.join(findFamilyId)
-            console.log("socket.rooms =>", socket.rooms)
-        })
 
         // Users.find().all([{ name: 'zerocho' }, { age: 24 }]);
 
