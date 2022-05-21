@@ -125,14 +125,15 @@ module.exports = server => {
         })
 
         socket.on("getMyAlert", async ({ userId, type }) => {
-            console.log("get 알림 =>", userId)
+            console.log("get 알림(userId) =>", userId)
+            console.log("get 알림(type) =>", type)
             const receiver = getUser(userId)
             console.log("receiver    ", receiver)
             const findUserAlertDB = await Alert.find({ userId, type })
             console.log("findUserAlertDB   ", findUserAlertDB)
 
             io.to(receiver.socketId).emit("newInviteDB", {
-                findUserAlertDB: [findUserAlertDB],
+                findUserAlertDB: findUserAlertDB,
             })
         })
 
