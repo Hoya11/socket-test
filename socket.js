@@ -82,6 +82,13 @@ module.exports = server => {
             console.log("socket.rooms =>", socket.rooms)
         })
 
+        socket.on("movingRoom", async (familyId) => {
+            console.log("familyId =>", familyId)
+            const findFamilyId = familyId.familyId
+            socket.join(findFamilyId)
+            console.log("socket.rooms =>", socket.rooms)
+        })
+
         // Users.find().all([{ name: 'zerocho' }, { age: 24 }]);
 
         //가족 멤버 초대
