@@ -164,6 +164,44 @@ module.exports = server => {
             console.log(44, receiver)
         })
 
+
+        socket.on("sendFamilyNoti", (async ({ senderName, receiverFamily, category, type }) => {
+            const receiver = getUser(receiverFamily)
+            console.log("getUser", getUser)
+            console.log("receiver", receiver)
+
+            // const date = new Date();
+            io.to(receiverFamily).emit("getFamilyNoti", {
+                senderName, //보내는 사람 이름
+                receiverFamily, // 현재 가족 Id
+                category,
+                type,
+            })
+
+            //createdAt을 한국 시간대로 설정
+            const cur_date = new Date()
+            const utc = cur_date.getTime() + cur_date.getTimezoneOffset() * 60 * 1000
+            const time_diff = 9 * 60 * 60 * 1000
+            const createdAt = new Date(utc + time_diff)
+
+            //alert DB
+            //alert를 DB에 생성하는 API
+            const getFamilyNotiDB = await Alert.create({
+                familyId: receiverFamily,
+                nickname: senderName,
+                category,
+                type,
+                createdAt,
+            })
+
+            // invite 알림 이후에 바로 알림 DB에 생성 및 저장하며 실시간 알림에 보여주기.
+            io.to(receiverFamily).emit("getFamilyNoti", {
+                getFamilyNotiDB: [getFamilyNotiDB],
+            })
+        }))
+
+
+
         socket.on("sendText", ({ senderName, receiverName, text }) => {
             const receiver = getUser(receiverName)
             io.to(receiver.socketId).emit("getText", {
