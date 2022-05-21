@@ -122,7 +122,7 @@ module.exports = (server) => {
             })
             //alert DB
             //alert를 DB에 생성하는 API
-            const newInviteDB = await new Alert({
+            const newInviteDB = await Alert.create({
                 userId: findUser.userId,
                 familyMemberNickname,
                 category: "가족 초대",
