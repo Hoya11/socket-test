@@ -6,6 +6,7 @@ const alertSchema = mongoose.Schema({
     },
     userId: {
         type: String,
+        required: true,
     },
     familyMemberNickname: {
         type: String,
@@ -18,7 +19,6 @@ const alertSchema = mongoose.Schema({
     },
     type: {
         type: String,
-        required: true,
     },
     nickname: {
         type: String,

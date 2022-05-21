@@ -101,7 +101,6 @@ module.exports = server => {
 
             const receiver = getUser(findUser.userId)
 
-
             //createdAt을 한국 시간대로 설정
             const cur_date = new Date()
             const utc = cur_date.getTime() + cur_date.getTimezoneOffset() * 60 * 1000
@@ -140,7 +139,6 @@ module.exports = server => {
 
 
 
-
         //초대 수락버튼 클릭 시
         socket.on("inviteJoin", async ({ userId, familyId, familyMemberNickname }) => {
             console.log("familyId =>", familyId, userId, familyMemberNickname)
@@ -167,38 +165,48 @@ module.exports = server => {
                 type,
                 category,
             })
-            // console.log(33, senderName, type, category)
-            // console.log(44, receiver)
         })
 
 
+
         //사진추가
-        socket.on("sendFamilyNoti", (async ({ senderName, receiverFamily, category, type }) => {
+        socket.on("sendFamilyNoti", (async ({ userId, senderName, receiverFamily, category, type }) => {
             console.log("socket.rooms =>", socket.rooms)
             socket.join(receiverFamily)
-            console.log("무슨값오지?", senderName, receiverFamily, category, type)
+            console.log("무슨값오지?", userId, senderName, receiverFamily, category, type)
             //createdAt을 한국 시간대로 설정
             const cur_date = new Date()
             const utc = cur_date.getTime() + cur_date.getTimezoneOffset() * 60 * 1000
             const time_diff = 9 * 60 * 60 * 1000
             const createdAt = new Date(utc + time_diff)
 
-            //alert DB
             //alert를 DB에 생성하는 API
-            const getFamilyNotiDB = await Alert.create({
+            await Alert.create({
+                userId,
                 familyId: receiverFamily,
-                nickname: senderName,
                 category,
                 type,
+                nickname: senderName,
                 createdAt,
             })
-
-            console.log("socket.rooms =>", socket.rooms)
-            // invite 알림 이후에 바로 알림 DB에 생성 및 저장하며 실시간 알림에 보여주기.
-            socket.to(receiverFamily).emit("getFamilyNoti", {
-                getFamilyNotiDB: [getFamilyNotiDB],
-            })
         }))
+
+        socket.on("getFamilyNoti", async ({ userId, familyId }) => {
+            if (!userId) {
+                return
+            } else {
+                console.log("get 알림(userId) =>", userId)
+                console.log("get 알림(familyId) =>", familyId)
+                const receiver = getUser(userId)
+                console.log("receiver    ", receiver)
+                const findUserAlertDB = await Alert.find({ userId, familyId })
+                // console.log("findUserAlertDB   ", findUserAlertDB)
+
+                io.to(receiver.socketId).emit("newInviteDB", {
+                    findUserAlertDB: findUserAlertDB,
+                })
+            }
+        })
 
 
 
