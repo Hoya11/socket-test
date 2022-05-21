@@ -47,7 +47,7 @@ module.exports = server => {
 
     //* 웹소켓 연결 시
     io.on("connection", socket => {
-        console.log("소켓 연결됨")
+        console.log("소켓 연결됨", socket.id)
         // const req = socket.request;
         // const {
         //     headers: { referer },
@@ -200,7 +200,7 @@ module.exports = server => {
 
         socket.on("disconnect", () => {
             removeUser(socket.id)
-            console.log("연결끊어졌음")
+            console.log("소켓 연결끊어졌음", socket.id)
         })
     })
 }
