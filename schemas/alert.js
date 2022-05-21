@@ -1,6 +1,9 @@
 const mongoose = require("mongoose")
 
 const alertSchema = mongoose.Schema({
+    familyId: {
+        type: String,
+    },
     userId: {
         type: String,
     },
@@ -10,12 +13,18 @@ const alertSchema = mongoose.Schema({
     familyMemberNickname: {
         type: String,
     },
+    selectEmail: {
+        type: String,
+    },
     category: {
         type: String,
     },
     type: {
         type: String,
         required: true,
+    },
+    nickname: {
+        type: String,
     },
     createdAt: {
         type: Date,

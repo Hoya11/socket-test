@@ -106,25 +106,18 @@ module.exports = server => {
             const createdAt = new Date(utc + time_diff)
 
             console.log("receiver", receiver)
-            io.to(receiver.socketId).emit("inviteMsg", {
-                familyId,
-                familyMemberNickname,
-                selectEmail,
-                type: "초대",
-                category: "가족 초대",
-                userId: findUser.userId,
-                nickname,
-            })
+
             //alert DB
             //alert를 DB에 생성하는 API
             const newInviteDB = await Alert.create({
                 familyId,
+                userId: findUser.userId,
                 familyMemberNickname,
                 selectEmail,
-                type: "초대",
                 category: "가족 초대",
-                userId: findUser.userId,
+                type: "초대",
                 nickname,
+                createdAt,
             })
 
             // invite 알림 이후에 바로 알림 DB에 생성 및 저장하며 실시간 알림에 보여주기.
