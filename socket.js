@@ -124,6 +124,7 @@ module.exports = server => {
         })
 
         socket.on("getMyAlert", async ({ userId, type }) => {
+
             console.log("get 알림(userId) =>", userId)
             console.log("get 알림(type) =>", type)
             const receiver = getUser(userId)
@@ -192,7 +193,7 @@ module.exports = server => {
         }))
 
         socket.on("getFamilyNoti", async ({ userId, familyId }) => {
-            console.log("socket.rooms =>", socket.rooms)
+            console.log("getFamilyNoti rooms =>", socket.rooms)
 
             if (!userId) {
                 return
