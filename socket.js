@@ -76,7 +76,7 @@ module.exports = server => {
             console.log("userId =>", userId)
             const findUserId = userId.userId
             const familyList = await FamilyMember.find({ userId: findUserId })
-            console.log("familyList =>", familyList)
+            // console.log("familyList =>", familyList)
             const familyId = familyList[0].familyId
 
             socket.join(familyId)
@@ -85,6 +85,7 @@ module.exports = server => {
 
         //가족리스트 클릭이동 시 
         socket.on("movingRoom", async (familyId) => {
+            socket.leave(socket.rooms[1])
             console.log("familyId =>", familyId)
             const findFamilyId = familyId.familyId
             socket.join(findFamilyId)
@@ -195,20 +196,18 @@ module.exports = server => {
         socket.on("getFamilyNoti", async ({ userId, familyId }) => {
             console.log("getFamilyNoti rooms =>", socket.rooms)
 
-            if (!userId) {
-                return
-            } else {
-                console.log("get 알림(userId) =>", userId)
-                console.log("get 알림(familyId) =>", familyId)
-                const receiver = getUser(userId)
-                console.log("receiver    ", receiver)
-                const findUserAlertDB = await Alert.find({ userId, familyId })
-                // console.log("findUserAlertDB   ", findUserAlertDB)
 
-                io.to(receiver.socketId).emit("newInviteDB", {
-                    findUserAlertDB: findUserAlertDB,
-                })
-            }
+            console.log("get 알림(userId) =>", userId)
+            console.log("get 알림(familyId) =>", familyId)
+            const receiver = getUser(userId)
+            console.log("receiver    ", receiver)
+            const findUserAlertDB = await Alert.find({ userId, familyId })
+            // console.log("findUserAlertDB   ", findUserAlertDB)
+
+            io.to(receiver.socketId).emit("newInviteDB", {
+                findUserAlertDB: findUserAlertDB,
+            })
+
         })
 
 
