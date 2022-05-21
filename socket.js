@@ -122,19 +122,22 @@ module.exports = server => {
                 nickname,
                 createdAt,
             })
-
         })
 
         socket.on("getMyAlert", async ({ userId, type }) => {
             const receiver = getUser(userId)
             console.log("receiver    ", receiver)
             const findUserAlertDB = await Alert.find({ userId, type })
-            console.log("findUserRoomDB   ", findUserRoomDB)
+            console.log("findUserAlertDB   ", findUserAlertDB)
 
             io.to(receiver.socketId).emit("newInviteDB", {
                 findUserAlertDB: [findUserAlertDB],
             })
         })
+
+
+
+
 
         //초대 수락버튼 클릭 시
         socket.on("inviteJoin", async ({ userId, familyId, familyMemberNickname }) => {
