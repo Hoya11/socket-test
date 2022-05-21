@@ -183,8 +183,8 @@ module.exports = server => {
 
         //사진추가
         socket.on("sendFamilyNoti", (async ({ userId, senderName, receiverFamily, category, type }) => {
-            // console.log("socket.rooms =>", socket.rooms)
-            socket.join(receiverFamily)
+            console.log("sendFamilyNoti.rooms =>", socket.rooms)
+            // socket.join(receiverFamily)
             // console.log("무슨값오지?", userId, senderName, receiverFamily, category, type)
             //createdAt을 한국 시간대로 설정
             const cur_date = new Date()
@@ -212,7 +212,7 @@ module.exports = server => {
             const findUserAlertDB = await Alert.find({ userId })
             // console.log("findUserAlertDB   ", findUserAlertDB)
 
-            io.to(receiver.socketId).emit("newInviteDB", {
+            io.to(receiver.socketId).emit("notiReturn", {
                 findUserAlertDB: findUserAlertDB,
             })
 
