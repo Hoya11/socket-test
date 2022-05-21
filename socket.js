@@ -134,16 +134,16 @@ module.exports = server => {
             })
         })
 
-        socket.on("getMyAlert", async ({ userId, type }) => {
+        socket.on("getNoti", async ({ userId }) => {
 
             // console.log("get 알림(userId) =>", userId)
             // console.log("get 알림(type) =>", type)
             const receiver = getUser(userId)
             // console.log("receiver    ", receiver)
-            const findUserAlertDB = await Alert.find({ userId, type })
+            const findUserAlertDB = await Alert.find({ userId })
             // console.log("findUserAlertDB   ", findUserAlertDB)
 
-            io.to(receiver.socketId).emit("newInviteDB", {
+            io.to(receiver.socketId).emit("sendNoti", {
                 findUserAlertDB: findUserAlertDB,
             })
         })
@@ -203,20 +203,19 @@ module.exports = server => {
             })
         }))
 
-        socket.on("getFamilyNoti", async ({ userId }) => {
-            // console.log("getFamilyNoti rooms =>", socket.rooms)
-            // console.log("get 알림(userId) =>", userId)
-            // console.log("get 알림(familyId) =>", familyId)
-            const receiver = getUser(userId)
-            // console.log("receiver    ", receiver)
-            const findUserAlertDB = await Alert.find({ userId })
-            // console.log("findUserAlertDB   ", findUserAlertDB)
+        // socket.on("getFamilyNoti", async ({ userId }) => {
+        //     // console.log("getFamilyNoti rooms =>", socket.rooms)
+        //     // console.log("get 알림(userId) =>", userId)
+        //     // console.log("get 알림(familyId) =>", familyId)
+        //     const receiver = getUser(userId)
+        //     // console.log("receiver    ", receiver)
+        //     const findUserAlertDB = await Alert.find({ userId })
+        //     // console.log("findUserAlertDB   ", findUserAlertDB)
 
-            io.to(receiver.socketId).emit("notiReturn", {
-                findUserAlertDB: findUserAlertDB,
-            })
-
-        })
+        //     io.to(receiver.socketId).emit("notiReturn", {
+        //         findUserAlertDB: findUserAlertDB,
+        //     })
+        // })
 
 
 
