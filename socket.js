@@ -166,6 +166,7 @@ module.exports = server => {
 
 
         socket.on("sendFamilyNoti", (async ({ senderName, receiverFamily, category, type }) => {
+            console.log("무슨값오지?", senderName, receiverFamily, category, type)
             const receiver = getUser(receiverFamily)
             console.log("getUser", getUser)
             console.log("receiver", receiver)
