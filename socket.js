@@ -84,9 +84,9 @@ module.exports = server => {
         })
 
 
-        socket.on("leaveRoom", (familyId) => {
+        socket.on("leaveRoom", async (familyId) => {
             console.log("leaveRoom =>", familyId)
-            socket.leave(familyId)
+            await socket.leave(familyId)
             console.log("leaveRoom.rooms =>", socket.rooms)
         })
 
