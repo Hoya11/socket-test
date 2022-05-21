@@ -119,8 +119,8 @@ module.exports = (server) => {
             const newInviteDB = await new Alert({
                 userId: findUser.userId,
                 familyMemberNickname,
-                category,
-                type,
+                category: "가족 초대",
+                type: "초대",
                 createdAt: createdAt,
             }).sort(-createdAt)
 
