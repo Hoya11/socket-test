@@ -134,18 +134,23 @@ module.exports = server => {
             })
         })
 
-        socket.on("getNoti", async ({ userId }) => {
+        socket.on("getMyAlert", async ({ userId, type }) => {
 
-            // console.log("get 알림(userId) =>", userId)
-            // console.log("get 알림(type) =>", type)
-            const receiver = getUser(userId)
-            // console.log("receiver    ", receiver)
-            const findUserAlertDB = await Alert.find({ userId })
-            // console.log("findUserAlertDB   ", findUserAlertDB)
+            if (!userId) {
+                return
+            } else {
 
-            io.to(receiver.socketId).emit("sendNoti", {
-                findUserAlertDB: findUserAlertDB,
-            })
+                // console.log("get 알림(userId) =>", userId)
+                // console.log("get 알림(type) =>", type)
+                const receiver = getUser(userId)
+                // console.log("receiver    ", receiver)
+                const findUserAlertDB = await Alert.find({ userId, type })
+                // console.log("findUserAlertDB   ", findUserAlertDB)
+
+                io.to(receiver.socketId).emit("newInviteDB", {
+                    findUserAlertDB: findUserAlertDB,
+                })
+            }
         })
 
 
@@ -183,8 +188,8 @@ module.exports = server => {
 
         //사진추가
         socket.on("sendFamilyNoti", (async ({ userId, senderName, receiverFamily, category, type }) => {
-            console.log("sendFamilyNoti.rooms =>", socket.rooms)
-            // socket.join(receiverFamily)
+            // console.log("socket.rooms =>", socket.rooms)
+            socket.join(receiverFamily)
             // console.log("무슨값오지?", userId, senderName, receiverFamily, category, type)
             //createdAt을 한국 시간대로 설정
             const cur_date = new Date()
@@ -203,19 +208,21 @@ module.exports = server => {
             })
         }))
 
-        // socket.on("getFamilyNoti", async ({ userId }) => {
-        //     // console.log("getFamilyNoti rooms =>", socket.rooms)
-        //     // console.log("get 알림(userId) =>", userId)
-        //     // console.log("get 알림(familyId) =>", familyId)
-        //     const receiver = getUser(userId)
-        //     // console.log("receiver    ", receiver)
-        //     const findUserAlertDB = await Alert.find({ userId })
-        //     // console.log("findUserAlertDB   ", findUserAlertDB)
+        socket.on("getFamilyNoti", async ({ userId }) => {
+            // console.log("getFamilyNoti rooms =>", socket.rooms)
 
-        //     io.to(receiver.socketId).emit("notiReturn", {
-        //         findUserAlertDB: findUserAlertDB,
-        //     })
-        // })
+            // console.log("get 알림(userId) =>", userId)
+            // console.log("get 알림(familyId) =>", familyId)
+            const receiver = getUser(userId)
+            // console.log("receiver    ", receiver)
+            const findUserAlertDB = await Alert.find({ userId })
+            // console.log("findUserAlertDB   ", findUserAlertDB)
+
+            io.to(receiver.socketId).emit("newInviteDB", {
+                findUserAlertDB: findUserAlertDB,
+            })
+
+        })
 
 
 
