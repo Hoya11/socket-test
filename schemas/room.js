@@ -13,7 +13,8 @@ const roomSchema = mongoose.Schema({
         default: false,
     },
     familyMemberList: {
-        type: Array
+        type: Array,
+        default: [],
     }
 })
 roomSchema.virtual('roomId').get(function () {

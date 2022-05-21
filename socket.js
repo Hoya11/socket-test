@@ -124,7 +124,7 @@ module.exports = (server) => {
             if (findRoom) {
                 await Room.updateOne(
                     { familyId: familyId },
-                    { $push: { FamilyMemberList: [{ userId: userId, userNickname: familyMemberNickname }] } }
+                    { $push: { FamilyMemberList: { userId: userId, userNickname: familyMemberNickname } } }
                 )
             }
 
