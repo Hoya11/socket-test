@@ -97,10 +97,12 @@ module.exports = (server) => {
         // Users.find().all([{ name: 'zerocho' }, { age: 24 }]);
 
         //가족 멤버 초대
-        socket.on("inviteMember", (async ({ familyId, familyMemberNickname, selectEmail, type, category }) => {
+        socket.on("inviteMember", (async ({ familyId, familyMemberNickname, selectEmail, nickname }) => {
             console.log("5555", familyId, familyMemberNickname, selectEmail, type)
             const findUser = await User.findOne({ email: selectEmail })
             console.log("findUser", findUser)
+
+
 
 
             const receiver = getUser(findUser.userId)
@@ -111,7 +113,8 @@ module.exports = (server) => {
                 selectEmail,
                 type: "초대",
                 category: "가족 초대",
-                userId: findUser.userId
+                userId: findUser.userId,
+                nickname
             })
         }));
 
