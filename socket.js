@@ -128,11 +128,11 @@ module.exports = server => {
         socket.on("getMyAlert", async ({ userId, type }) => {
             const receiver = getUser(userId)
             console.log("receiver    ", receiver)
-            const findUserRoomDB = await Room.find({ userId, type })
+            const findUserAlertDB = await Alert.find({ userId, type })
             console.log("findUserRoomDB   ", findUserRoomDB)
 
             io.to(receiver.socketId).emit("newInviteDB", {
-                findUserRoomDB: [findUserRoomDB],
+                findUserAlertDB: [findUserAlertDB],
             })
         })
 
