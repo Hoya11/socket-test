@@ -1,7 +1,6 @@
 const SocketIO = require("socket.io")
 // const ios = require('express-socket.io-session');
 const User = require("./schemas/user")
-const Room = require("./schemas/room")
 const FamilyMember = require("./schemas/familyMember")
 const Alert = require("./schemas/alert")
 

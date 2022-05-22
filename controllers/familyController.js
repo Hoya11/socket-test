@@ -13,7 +13,6 @@ const VoiceAlbum = require("../schemas/voiceAlbum")
 const VoiceFile = require("../schemas/voiceFile")
 const Like = require("../schemas/like")
 const Joi = require("joi")
-const Room = require('../schemas/room')
 const Alert = require('../schemas/alert')
 
 const familySchema = Joi.object({
@@ -71,14 +70,6 @@ const createFamily = async (req, res) => {
       familyTitle,
       familyHost: user.userId,
     })
-
-
-    const newRoom = await Room.create({
-      familyId: newFamily.familyId,
-      hostId: user.userId,
-      familyMemberList: [{ userId: user.userId, userNickname: user.nickname }]
-    })
-    console.log("newRoom =", newRoom)
 
     const familyHost = await FamilyMember.create({
       familyId: newFamily.familyId,
