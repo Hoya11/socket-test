@@ -43,11 +43,7 @@ module.exports = server => {
 
     let onlineUsers = []
     const addNewUser = (userId, socketId) => {
-        console.log("addNewUser => ", userId, socketId)
         !onlineUsers.some(user => user.userId === userId) && onlineUsers.push({ userId, socketId })
-
-        console.log("onlineUsers =>", onlineUsers)
-
     }
 
     const removeUser = socketId => {
@@ -63,18 +59,19 @@ module.exports = server => {
         console.log("소켓 연결됨", socket.id)
 
         socket.on("newUser", async ({ userId }) => {
+            console.log(userId)
             console.log("newUser-addNewUser", addNewUser)
             addNewUser(userId, socket.id)
 
-            const createdAt = new Date()
-            const userFind = await Connect.findOne({ userId })
-            if (!userFind) {
-                await Connect.create({
-                    userId,
-                    connected: true,
-                    connectedAt: createdAt
-                })
-            }
+            // const createdAt = new Date()
+            // const userFind = await Connect.findOne({ userId })
+            // if (!userFind) {
+            //     await Connect.create({
+            //         userId,
+            //         connected: true,
+            //         connectedAt: createdAt
+            //     })
+            // }
             // else {
             //     await Connect.updateOne(
             //         { userId }, { $set: { connected: false, connectedAt: createdAt }, }
