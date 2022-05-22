@@ -144,9 +144,10 @@ module.exports = server => {
                     nickname,
                     createdAt,
                 })
-            } else {
-                socket.emit('errorMsg', "이미 초대한 가족입니다.");    // 이미 초대한 유저 예외처리
             }
+            // else {
+            //     socket.emit('errorMsg', "이미 초대한 가족입니다.");    // 이미 초대한 유저 예외처리
+            // }
         })
 
         socket.on("getMyAlert", async ({ userId, type }) => {
