@@ -225,8 +225,6 @@ module.exports = server => {
 
 
         socket.on("disconnect", async () => {
-            removeUser(socket.id)
-            console.log("소켓 연결끊어졌음", socket.id)
 
             const userFind = await Connect.findOne({ socketId: socket.id })
             console.log("disconnect-userFind 11=>", userFind)
@@ -236,6 +234,9 @@ module.exports = server => {
                 await Connect.updateOne({ socketId: socket.id }, { $set: { connected: false, connectedAt: timeForToday(createdAt) } })
             }
             console.log("disconnect-userFind 22=>", userFind)
+
+            removeUser(socket.id)
+            console.log("소켓 연결끊어졌음", socket.id)
         })
     })
 }
