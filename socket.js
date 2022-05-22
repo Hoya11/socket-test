@@ -161,7 +161,7 @@ module.exports = server => {
                     category: "가족 초대",
                     type: "초대",
                     nickname,
-                    createdAt,
+                    createdAt: timeForToday(createdAt),
                 }
             })
         })
