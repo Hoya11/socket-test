@@ -209,9 +209,9 @@ module.exports = server => {
 
 
         socket.on("disconnect", () => {
-            const a = getUser(socket.id)
-            console.log("a", a)
-            console.log("b", onlineUsers)
+            const a = getUser()
+            console.log("aaaa", a)
+
             removeUser(socket.id)
             console.log("소켓 연결끊어졌음", socket.id)
         })
