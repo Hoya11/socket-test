@@ -127,6 +127,7 @@ module.exports = server => {
 
         //가족 멤버 초대
         socket.on("inviteMember", async ({ familyId, selectEmail, nickname }) => {
+            console.log("inviteMember =>", familyId, selectEmail, nickname)
             const findUser = await User.findOne({ email: selectEmail })
             const chkAlertDB = await Alert.findOne({ selectEmail, type })
 
