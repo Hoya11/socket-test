@@ -130,11 +130,15 @@ module.exports = server => {
         socket.on("getMyAlert", async ({ userId, type }) => {
             if (userId && type) {
                 const receiver = getUser(userId)
-                const findUserAlertDB = await Alert.findOne({ userId, type: type })
-                findUserAlertDB.createdAt = timeForToday(findUserAlertDB.createdAt)
-                io.to(receiver.socketId).emit("newInviteDB", {
-                    findUserAlertDB: findUserAlertDB,
-                })
+                const findUserAlertDB = await Alert.find({ userId, type: type })
+                if (findUserAlertDB.length) {
+                    for (let findUserDB of findUserAlertDB) {
+                        findUserDB.createdAt = timeForToday(findUserDB.createdAt)
+                    }
+                    io.to(receiver.socketId).emit("newInviteDB", {
+                        findUserAlertDB: findUserAlertDB,
+                    })
+                }
             }
         })
 
@@ -215,8 +219,10 @@ module.exports = server => {
 
         socket.on("disconnect", async () => {
             const userFind = await Connect.findOne({ socketId: socket.id })
+            const createdAt = new Date()
+
             if (userFind) {
-                await Connect.updateOne({ socketId: socket.id }, { $set: { connected: false } })
+                await Connect.updateOne({ socketId: socket.id }, { $set: { connected: false, connectedAt: timeForToday(createdAt) } })
             }
             removeUser(socket.id)
             console.log("소켓 연결끊어졌음", socket.id)
