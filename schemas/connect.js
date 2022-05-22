@@ -10,7 +10,11 @@ const connectSchema = mongoose.Schema({
     },
     connectedAt: {
         type: String
-    }
+    },
+    socketId: {
+        type: String,
+        required: true,
+    },
 })
 
 connectSchema.virtual('connectId').get(function () {

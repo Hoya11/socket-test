@@ -64,21 +64,21 @@ module.exports = server => {
             console.log("newUser-addNewUser =>", addNewUser)
             const createdAt = new Date()
             const userFind = await Connect.findOne({ userId })
+
             console.log("userFind =>", userFind)
             if (!userFind) {
-                const uuuu = await Connect.create({
+                const newConnectedUser = await Connect.create({
                     userId: userId,
                     connected: true,
+                    socketId: addNewUser.socket.id,
                     connectedAt: createdAt
                 })
-                console.log("uuuu", uuuu)
+                console.log("newConnectedUser", newConnectedUser)
+            } else {
+                if (userFind.connected === false) {
+                    await Connect.updateOne({ userId }, { $set: { connected: true, socketId: addNewUser.socket.id } })
+                }
             }
-
-            // else {
-            //     await Connect.updateOne(
-            //         { userId }, { $set: { connected: false, connectedAt: createdAt }, }
-            //     )
-            // }
         })
 
 
@@ -212,9 +212,10 @@ module.exports = server => {
 
 
         socket.on("disconnect", () => {
-            const a = getUser()
-            console.log("aaaa", a)
-
+            const userFind = await Connect.findOne({ socketId: socket.id })
+            if (userFind) {
+                await Connect.updateOne({ socketId: socket.id }, { $set: { connected: false } })
+            }
             removeUser(socket.id)
             console.log("소켓 연결끊어졌음", socket.id)
         })
