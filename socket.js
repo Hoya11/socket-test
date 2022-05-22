@@ -61,6 +61,7 @@ module.exports = server => {
         console.log("소켓 연결됨", socket.id)
 
         socket.on("newUser", userId => {
+            console.log("newUser-addNewUser", addNewUser)
             addNewUser(userId, socket.id)
 
 
