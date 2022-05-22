@@ -106,7 +106,7 @@ module.exports = server => {
         // Users.find().all([{ name: 'zerocho' }, { age: 24 }]);
 
         //가족 멤버 초대
-        socket.on("inviteMember", async ({ familyId, familyMemberNickname, selectEmail, nickname }) => {
+        socket.on("inviteMember", async ({ familyId, selectEmail, nickname }) => {
             // console.log("5555", familyId, familyMemberNickname, selectEmail)
             const findUser = await User.findOne({ email: selectEmail })
 
@@ -123,7 +123,6 @@ module.exports = server => {
                 await Alert.create({
                     familyId,
                     userId: findUser.userId,
-                    familyMemberNickname,
                     selectEmail,
                     category: "가족 초대",
                     type: "초대",
@@ -151,41 +150,43 @@ module.exports = server => {
         })
 
 
-        //초대 수락버튼 클릭 시
-        socket.on("inviteJoin", async ({ userId, familyId, familyMemberNickname }) => {
-            // console.log("familyId =>", familyId, userId, familyMemberNickname)
-            const findRoom = await Room.findOne({ familyId: familyId })
-            // console.log("findRoom =>", findRoom)
+        // //초대 수락버튼 클릭 시
+        // socket.on("inviteJoin", async ({ userId, familyId, familyMemberNickname }) => {
+        //     // console.log("familyId =>", familyId, userId, familyMemberNickname)
+        //     const findRoom = await Room.findOne({ familyId: familyId })
+        //     // console.log("findRoom =>", findRoom)
 
-            if (findRoom) {
-                await Room.updateOne({ familyId: familyId }, { $push: { familyMemberList: { userId: userId, userNickname: familyMemberNickname } } })
-            }
+        //     if (findRoom) {
+        //         await Room.updateOne({ familyId: familyId }, { $push: { familyMemberList: { userId: userId, userNickname: familyMemberNickname } } })
+        //     }
 
-            // console.log("222", findRoom)
-            socket.join(familyId)
-            // console.log("socket.rooms =>", socket.rooms)
-        })
+        //     // console.log("222", findRoom)
+        //     // socket.join(familyId)
+        //     // console.log("socket.rooms =>", socket.rooms)
+        // })
 
 
 
 
         // 사진 좋아요 댓글 알림
-        socket.on("sendNotification", (async ({ senderName, receiverId, type, category }) => {
-            console.log("sendNotification-userId =>", senderName, receiverId, type, category)
+        socket.on("sendNotification", (async ({ photoId, senderName, receiverId, type, category, likeChk }) => {
+            console.log("sendNotification-userId =>", photoId, senderName, receiverId, type, category, likeChk)
             // const receiver = getUser(userId)
 
-            const cur_date = new Date()
-            const utc = cur_date.getTime() + (cur_date.getTimezoneOffset() * 60 * 1000)
-            const time_diff = 9 * 60 * 60 * 1000
-            const createdAt = new Date(utc + time_diff)
+            const createdAt = new Date()
 
-            await Alert.create({
-                senderName,
-                receiverId,
-                type,
-                category,
-                createdAt
-            })
+            if (likeChk) {
+                await Alert.create({
+                    photoId,
+                    senderName,
+                    receiverId,
+                    type,
+                    category,
+                    createdAt
+                })
+            } else {
+                await Alert.deleteOne({ photoId, receiverId })
+            }
         }))
 
         // 댓글 좋아요 알림보내는 부분

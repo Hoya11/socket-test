@@ -31,7 +31,11 @@ const alertSchema = mongoose.Schema({
     },
     senderName: {
         type: String,
+    },
+    photoId: {
+        type: String
     }
+
 })
 
 alertSchema.virtual("alertId").get(function () {
