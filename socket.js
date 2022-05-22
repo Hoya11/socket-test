@@ -170,6 +170,16 @@ module.exports = server => {
             } else {
                 await Alert.deleteOne({ photoId, receiverId })
             }
+
+            const receiver = getUser(receiverId)
+            io.to(receiver.socketId).emit("getNotification", {
+                photoId,
+                senderName,
+                receiverId,
+                type,
+                category,
+                createdAt
+            })
         }))
 
         // 사진 댓글 알림
