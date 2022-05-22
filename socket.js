@@ -113,7 +113,7 @@ module.exports = server => {
             }
             const receiver = getUser(userId)
             io.to(receiver.socketId).emit("newInviteDB", {
-                findUserAlertDB: {
+                findUserAlertDB: [{
                     familyId,
                     userId: findUser.userId,
                     familyMemberNickname,
@@ -122,7 +122,7 @@ module.exports = server => {
                     type: "초대",
                     nickname,
                     createdAt: timeForToday(createdAt),
-                }
+                }]
             })
         })
 
