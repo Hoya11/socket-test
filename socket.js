@@ -171,7 +171,7 @@ module.exports = server => {
 
         // 사진 좋아요 댓글 알림
         socket.on("sendNotification", (async ({ userName, userId, type, category }) => {
-            console.log("sendNotification-userId =>", userId)
+            console.log("sendNotification-userId =>", userName, userId, type, category)
             // const receiver = getUser(userId)
 
             const cur_date = new Date()
