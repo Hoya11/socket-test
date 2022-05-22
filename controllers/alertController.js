@@ -1,7 +1,7 @@
 const Alert = require('../schemas/alert')
 
 
-const deleteComment = async (req, res) => {
+const deleteAlert = async (req, res) => {
     const { commentId } = req.params
 
     try {

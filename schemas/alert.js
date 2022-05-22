@@ -6,7 +6,6 @@ const alertSchema = mongoose.Schema({
     },
     userId: {
         type: String,
-        required: true,
     },
     familyMemberNickname: {
         type: String,

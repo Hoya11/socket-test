@@ -20,6 +20,7 @@ module.exports = server => {
     // 네임스페이스 등록
     const room = io.of("/room")
 
+
     let onlineUsers = []
 
     const addNewUser = (userId, socketId) => {
@@ -83,7 +84,7 @@ module.exports = server => {
             // console.log("socket.rooms =>", socket.rooms)
         })
 
-
+        //작동을안함
         socket.on("leaveRoom", async (nowFamilyId) => {
             console.log("leaveRoom =>", nowFamilyId)
             await socket.leave(nowFamilyId)
@@ -108,35 +109,34 @@ module.exports = server => {
         socket.on("inviteMember", async ({ familyId, familyMemberNickname, selectEmail, nickname }) => {
             // console.log("5555", familyId, familyMemberNickname, selectEmail)
             const findUser = await User.findOne({ email: selectEmail })
-            // console.log("findUser", findUser)
 
-            const receiver = getUser(findUser.userId)
+            const chkAlertDB = await Alert.findOne({ selectEmail, type })
 
-            //createdAt을 한국 시간대로 설정
-            const cur_date = new Date()
-            const utc = cur_date.getTime() + (cur_date.getTimezoneOffset() * 60 * 1000)
-            const time_diff = 9 * 60 * 60 * 1000
-            const createdAt = new Date(utc + time_diff)
 
-            // console.log("receiver", receiver)
+            if (!chkAlertDB) {
+                const cur_date = new Date()
+                const utc = cur_date.getTime() + (cur_date.getTimezoneOffset() * 60 * 1000)
+                const time_diff = 9 * 60 * 60 * 1000
+                const createdAt = new Date(utc + time_diff)
 
-            //alert DB
-            //alert를 DB에 생성하는 API
-            await Alert.create({
-                familyId,
-                userId: findUser.userId,
-                familyMemberNickname,
-                selectEmail,
-                category: "가족 초대",
-                type: "초대",
-                nickname,
-                createdAt,
-            })
+                //alert를 DB에 생성하는 API
+                await Alert.create({
+                    familyId,
+                    userId: findUser.userId,
+                    familyMemberNickname,
+                    selectEmail,
+                    category: "가족 초대",
+                    type: "초대",
+                    nickname,
+                    createdAt,
+                })
+            } else {
+                socket.emit('event_name', msg);    // 이미 초대한 유저 예외처리
+            }
         })
 
         socket.on("getMyAlert", async ({ userId, type }) => {
-
-            if (userId == userId) {
+            if (userId) {
                 // console.log("get 알림(userId) =>", userId)
                 // console.log("get 알림(type) =>", type)
                 const receiver = getUser(userId)
@@ -149,8 +149,6 @@ module.exports = server => {
                 })
             }
         })
-
-
 
 
         //초대 수락버튼 클릭 시
@@ -167,6 +165,9 @@ module.exports = server => {
             socket.join(familyId)
             // console.log("socket.rooms =>", socket.rooms)
         })
+
+
+
 
         // 사진 좋아요 알림
         socket.on("sendNotification", (async ({ userName, userId, type, category }) => {
@@ -189,7 +190,7 @@ module.exports = server => {
 
 
 
-        // 사진 추가 알림
+        // 생성 알림
         socket.on("sendFamilyNoti", (async ({ userId, senderName, receiverFamily, category, type }) => {
             // console.log("socket.rooms =>", socket.rooms)
             socket.join(receiverFamily)
@@ -224,8 +225,8 @@ module.exports = server => {
             // console.log("getFamilyNoti 알림(familyId) =>", familyId)
 
             const receiver = getUser(userId)
-
-            const findRoom = await Room.find({ familyMemberList: { $all: { userId: userId } } })
+            // const findFamily = await FamilyMember.find({ userId })
+            // const findRoom = await Room.find({ familyMemberList })
             // console.log(findRoom)
 
             console.log("getFamilyNoti receiver => ", receiver)
