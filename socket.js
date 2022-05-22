@@ -269,7 +269,7 @@ module.exports = server => {
             for (let alertDB of findUserAlertDB) {
                 alertDB.createdAt = timeForToday(alertDB.createdAt)
             }
-            console.log(findUserAlertDB)
+            console.log("findUserAlertDB CreatedAt => ", findUserAlertDB)
 
             io.to(receiver.socketId).emit("getNotification", {
                 findAlertDB: findUserAlertDB,
