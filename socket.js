@@ -65,13 +65,16 @@ module.exports = server => {
 
             const createdAt = new Date()
             const userFind = await Connect.findOne({ userId })
+            console.log("userFind =>", userFind)
             if (!userFind) {
-                await Connect.create({
+                const uuuu = await Connect.create({
                     userId,
                     connected: true,
                     connectedAt: createdAt
                 })
+                console.log("uuuu", uuuu)
             }
+
             // else {
             //     await Connect.updateOne(
             //         { userId }, { $set: { connected: false, connectedAt: createdAt }, }
