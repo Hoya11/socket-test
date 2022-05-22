@@ -170,8 +170,9 @@ module.exports = server => {
             if (userId) {
                 const receiver = getUser(userId)
                 const findUserAlertDB = await Alert.find({ userId, type })
+                console.log("findUserAlertDB 1 => ", findUserAlertDB)
                 findUserAlertDB.createdAt = timeForToday(findUserAlertDB.createdAt)
-                console.log("findUserAlertDB => ", findUserAlertDB)
+                console.log("findUserAlertDB 2 => ", findUserAlertDB.createdAt)
                 io.to(receiver.socketId).emit("newInviteDB", {
                     findUserAlertDB: findUserAlertDB,
                 })
