@@ -126,7 +126,7 @@ module.exports = server => {
         // Users.find().all([{ name: 'zerocho' }, { age: 24 }]);
 
         //가족 멤버 초대
-        socket.on("inviteMember", async ({ familyId, selectEmail, nickname }) => {
+        socket.on("inviteMember", async ({ familyId, selectEmail, nickname, type }) => {
             console.log("inviteMember =>", familyId, selectEmail, nickname)
             const findUser = await User.findOne({ email: selectEmail })
             const chkAlertDB = await Alert.findOne({ selectEmail, type })
