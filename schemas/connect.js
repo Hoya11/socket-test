@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 
 const connectSchema = mongoose.Schema({
     userId: {
-        type: String
+        type: String,
+        required: true,
     },
     connected: {
         type: Boolean,

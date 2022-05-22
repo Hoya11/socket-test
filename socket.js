@@ -59,16 +59,15 @@ module.exports = server => {
         console.log("소켓 연결됨", socket.id)
 
         socket.on("newUser", async ({ userId }) => {
-            console.log(userId)
-            console.log("newUser-addNewUser", addNewUser)
+            console.log("newUser-userId =>", userId)
             addNewUser(userId, socket.id)
-
+            console.log("newUser-addNewUser =>", addNewUser)
             const createdAt = new Date()
             const userFind = await Connect.findOne({ userId })
             console.log("userFind =>", userFind)
             if (!userFind) {
                 const uuuu = await Connect.create({
-                    userId,
+                    userId: userId,
                     connected: true,
                     connectedAt: createdAt
                 })
