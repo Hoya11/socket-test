@@ -44,6 +44,9 @@ module.exports = server => {
     const addNewUser = (userId, socketId) => {
         console.log("addNewUser => ", userId, socketId)
         !onlineUsers.some(user => user.userId === userId) && onlineUsers.push({ userId, socketId })
+
+        console.log("onlineUsers =>", onlineUsers)
+
     }
 
     const removeUser = socketId => {
@@ -53,8 +56,6 @@ module.exports = server => {
     const getUser = userId => {
         return onlineUsers.find(user => user.userId === userId)
     }
-
-    console.log("onlineUsers =>", onlineUsers)
 
     //* 웹소켓 연결 시
     io.on("connection", socket => {
