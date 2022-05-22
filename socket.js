@@ -3,6 +3,7 @@ const SocketIO = require("socket.io")
 const User = require("./schemas/user")
 const FamilyMember = require("./schemas/familyMember")
 const Alert = require("./schemas/alert")
+const Connect = require("./schemas/connect")
 
 
 function timeForToday(createdAt) {
@@ -61,12 +62,24 @@ module.exports = server => {
     io.on("connection", socket => {
         console.log("소켓 연결됨", socket.id)
 
-        socket.on("newUser", userId => {
+        socket.on("newUser", async ({ userId }) => {
             console.log("newUser-addNewUser", addNewUser)
             addNewUser(userId, socket.id)
 
-
-
+            const createdAt = new Date()
+            const userFind = await Connect.findOne({ userId })
+            if (!userFind) {
+                await Connect.create({
+                    userId,
+                    connected: true,
+                    connectedAt: createdAt
+                })
+            }
+            // else {
+            //     await Connect.updateOne(
+            //         { userId }, { $set: { connected: false, connectedAt: createdAt }, }
+            //     )
+            // }
         })
 
 
@@ -196,6 +209,9 @@ module.exports = server => {
 
 
         socket.on("disconnect", () => {
+            const a = getUser(socket.id)
+            console.log("a", a)
+            console.log("b", onlineUsers)
             removeUser(socket.id)
             console.log("소켓 연결끊어졌음", socket.id)
         })
@@ -203,3 +219,5 @@ module.exports = server => {
 }
 
 
+
+module.exports = { timeForToday }

@@ -19,6 +19,9 @@ const familyMemberSchema = mongoose.Schema({
   todayMood: {
     type: String,
   },
+  userConnect: {
+    type: Object
+  }
 })
 
 familyMemberSchema.virtual("familyMemberId").get(function () {

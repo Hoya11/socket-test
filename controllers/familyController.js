@@ -13,7 +13,8 @@ const VoiceAlbum = require("../schemas/voiceAlbum")
 const VoiceFile = require("../schemas/voiceFile")
 const Like = require("../schemas/like")
 const Joi = require("joi")
-const Alert = require('../schemas/alert')
+const Connect = require("../schemas/connect")
+const { timeForToday } = require("../socket")
 
 const familySchema = Joi.object({
   familyTitle: Joi.string()
@@ -205,24 +206,6 @@ const createFamilyMember = async (req, res) => {
   }
 }
 
-//멤버 검색 API (전체 일치만 검색)
-// const searchUser = async (req, res) => {
-//   try {
-//     const { search } = req.query
-//     let searchKeyword = await User.findOne({ email: search })
-//     const userEmail = searchKeyword.email
-//     res.status(200).json({
-//       userEmail,
-//     })
-//   } catch (error) {
-//     console.log("이메일 없음", error)
-//     res.status(400).send({
-//       result: false,
-//       msg: "해당 이메일과 일치하는 정보가 없어요!",
-//     })
-//   }
-// }
-
 // 멤버 검색 API (앞자리 일치만 검색)
 const searchUser = async (req, res) => {
   const { search } = req.query
@@ -263,12 +246,26 @@ const searchUser = async (req, res) => {
   }
 }
 
-//가족구성원 조회 API
+//가족구성원 조회 API *(소켓 접속현황 추가)
 const getfamilyMember = async (req, res) => {
   try {
     const { familyId } = req.params
+
     const familyMemberList = await FamilyMember.find({ familyId })
-    res.status(200).json({ familyMemberList })
+
+    for (let familyConnect of familyMemberList) {
+      const userConnect = await Connect.findOne({ userId: familyConnect.userId })
+      console.log("userConnect =>", userConnect)
+      if (userConnect) {
+        userConnect.connectedAt = timeForToday(userConnect.connectedAt)
+        console.log("userConnect =>", userConnect.connectedAt)
+        familyConnect.userConnect = userConnect
+        console.log("familyConnect.userConnect =>", familyConnect.userConnect)
+      } else {
+        familyConnect.userConnect = {}
+      }
+    }
+    res.status(200).json({ familyMemberList, userConnect })
   } catch (error) {
     console.log("가족 구성원 조회에서 오류!", error)
     res.status(400).send({ result: false })

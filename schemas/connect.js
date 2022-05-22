@@ -1,24 +1,23 @@
 const mongoose = require("mongoose");
 
-const connetSchema = mongoose.Schema({
+const connectSchema = mongoose.Schema({
     userId: {
         type: String
     },
     connected: {
         type: Boolean,
-        default: false,
     },
     connectedAt: {
         type: String
     }
 })
 
-connetSchema.virtual('connetId').get(function () {
+connectSchema.virtual('connectId').get(function () {
     return this._id.toHexString();
 });
 
-connetSchema.set('toJSON', {
+connectSchema.set('toJSON', {
     virtuals: true,
 });
 
-module.exports = mongoose.model("Connet", connetSchema)
+module.exports = mongoose.model("Connect", connectSchema)

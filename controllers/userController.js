@@ -1,11 +1,10 @@
-const express = require("express")
-const router = express.Router()
 const User = require("../schemas/user")
 const Family = require("../schemas/family")
 const FamilyMember = require("../schemas/familyMember")
-const jwt = require("jsonwebtoken")
-const fs = require("fs")
-require("dotenv").config()
+const MissionMember = require("../schemas/missionMember")
+const Event = require("../schemas/event")
+const VoiceFile = require("../schemas/voiceFile")
+
 
 //유저 데이터 get API
 const getUser = async (req, res) => {
@@ -14,7 +13,7 @@ const getUser = async (req, res) => {
     user.password = ""
     const { userId } = res.locals.user
     const familyChk = await FamilyMember.find({ userId })
-    console.log("familyChk", familyChk)
+    console.log(123, familyChk)
 
     let familyList = []
     if (familyChk.length) {
@@ -44,18 +43,19 @@ const getProfile = async (req, res) => {
   try {
     console.log(res.locals)
     const { email } = res.locals.user
+
     const userInfo = await User.findOne({ email })
     const nickname = userInfo.nickname
     const profileImg = userInfo.profileImg
     const todayMood = userInfo.todayMood
 
-    const getMyprofile = res.status(200).json({
+
+    res.status(200).json({
       nickname: nickname,
       profileImg: profileImg,
       todayMood: todayMood,
-    })
 
-    await getMyprofile
+    })
   } catch (error) {
     console.log("프로필 조회에서 오류!", error)
     res.status(400).send({ result: false })
@@ -115,16 +115,27 @@ const editProfile = async (req, res) => {
 //오늘의 기분 수정 API
 const editTodayMood = async (req, res) => {
   try {
-    const { email } = res.locals.user
+    const { userId } = res.locals.user
     const { todayMood } = req.body
-    await User.updateOne({ email }, { $set: { todayMood: req.body.todayMood } })
-
-    res.status(200).json({
-      todayMood,
-    })
+    // 오늘의 기분 상태값 공백 체크
+    if (todayMood !== null) {
+      const existUser = await User.findOne({ _id: userId })
+      if (existUser) {
+        // 유저 db 수정
+        await User.updateOne({ _id: userId }, { $set: { todayMood } })
+        // 가족멤버 db 수정
+        await FamilyMember.updateMany({ userId }, { $set: { todayMood } })
+      }
+      res.status(200).json({
+        todayMood,
+        msg: "오늘의 기분이 수정되었어요.",
+      })
+    }
   } catch (error) {
     console.log("오늘의기분 수정에서 오류!", error)
-    res.status(400).send({ result: false })
+    res.status(400).send({
+      result: false,
+    })
   }
 }
 
