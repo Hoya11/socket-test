@@ -23,9 +23,6 @@ const alertSchema = mongoose.Schema({
     nickname: {
         type: String,
     },
-    createdAt: {
-        type: Date,
-    },
     receiverId: {
         type: String,
     },
@@ -34,7 +31,10 @@ const alertSchema = mongoose.Schema({
     },
     photoId: {
         type: String
-    }
+    },
+    createdAt: {
+        type: Date,
+    },
 
 })
 
