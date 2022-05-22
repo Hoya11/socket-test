@@ -62,6 +62,9 @@ module.exports = server => {
             console.log("newUser-userId =>", userId)
             addNewUser(userId, socket.id)
             console.log("newUser-addNewUser =>", addNewUser)
+            const receiver = getUser(userId)
+            console.log("newUser-receiver =>", receiver)
+
             const createdAt = new Date()
             const userFind = await Connect.findOne({ userId })
 
@@ -70,13 +73,13 @@ module.exports = server => {
                 const newConnectedUser = await Connect.create({
                     userId: userId,
                     connected: true,
-                    socketId: addNewUser.socket.id,
+                    socketId: receiver.socketId,
                     connectedAt: createdAt
                 })
                 console.log("newConnectedUser", newConnectedUser)
             } else {
                 if (userFind.connected === false) {
-                    await Connect.updateOne({ userId }, { $set: { connected: true, socketId: addNewUser.socket.id } })
+                    await Connect.updateOne({ userId }, { $set: { connected: true, socketId: receiver.socketId } })
                 }
             }
         })
