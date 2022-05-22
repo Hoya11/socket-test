@@ -189,7 +189,6 @@ module.exports = server => {
         }))
 
 
-
         // 생성 알림
         socket.on("sendFamilyNoti", (async ({ userId, senderName, receiverFamily, category, type }) => {
             // console.log("socket.rooms =>", socket.rooms)
@@ -218,26 +217,42 @@ module.exports = server => {
         //     const findUserConnect = await 
         // })
 
-        // 알림
-        socket.on("getFamilyNoti", async ({ userId }) => {
+        // 생성 알림 보내는부분
+        // socket.on("getFamilyNoti", async ({ userId }) => {
+        //     console.log("getFamilyNoti rooms =>", socket.rooms)
+        //     console.log("getFamilyNoti 알림(userId) =>", userId)
+        //     // console.log("getFamilyNoti 알림(familyId) =>", familyId)
+
+        //     const receiver = getUser(userId)
+        //     // const findFamily = await FamilyMember.find({ userId })
+        //     // const findRoom = await Room.find({ familyMemberList })
+        //     // console.log(findRoom)
+
+        //     console.log("getFamilyNoti receiver => ", receiver)
+        //     const findUserAlertDB = await Alert.find({ userId })
+        //     console.log("findUserAlertDB   ", findUserAlertDB)
+
+        //     io.to(receiver.socketId).emit("notiReturn", {
+        //         findAlertDB: findUserAlertDB,
+        //     })
+        // })
+
+
+        // 댓글 좋아요 알림보내는 부분
+        socket.on("getPhotoAlert", async ({ userId }) => {
             console.log("getFamilyNoti rooms =>", socket.rooms)
             console.log("getFamilyNoti 알림(userId) =>", userId)
-            // console.log("getFamilyNoti 알림(familyId) =>", familyId)
 
             const receiver = getUser(userId)
-            // const findFamily = await FamilyMember.find({ userId })
-            // const findRoom = await Room.find({ familyMemberList })
-            // console.log(findRoom)
 
             console.log("getFamilyNoti receiver => ", receiver)
             const findUserAlertDB = await Alert.find({ userId })
             console.log("findUserAlertDB   ", findUserAlertDB)
 
-            io.to(receiver.socketId).emit("notiReturn", {
+            io.to(receiver.socketId).emit("getNotification", {
                 findAlertDB: findUserAlertDB,
             })
         })
-
 
 
 
