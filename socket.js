@@ -131,6 +131,8 @@ module.exports = server => {
             if (userId && type) {
                 const receiver = getUser(userId)
                 const findUserAlertDB = await Alert.find({ userId, type: type })
+                console.log("getMyAlert-receiver =>", receiver)
+                console.log("getMyAlert-findUserAlertDB =>", findUserAlertDB)
                 if (findUserAlertDB.length) {
                     for (let findUserDB of findUserAlertDB) {
                         findUserDB.createdAt = timeForToday(findUserDB.createdAt)
