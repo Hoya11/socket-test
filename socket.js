@@ -91,9 +91,9 @@ module.exports = server => {
         socket.on("inviteMember", async ({ familyId, selectEmail, familyMemberNickname, nickname, type }) => {
             const findUser = await User.findOne({ email: selectEmail })
             const chkAlertDB = await Alert.findOne({ familyId, selectEmail, type })
+            console.log("findUser =>", findUser)
 
-
-            const userId = findUser.userId
+            const userId = findUser._id
             const createdAt = new Date()
 
             if (!chkAlertDB) {
@@ -112,6 +112,8 @@ module.exports = server => {
                 socket.emit('errorMsg', "이미 초대한 가족입니다.");
             }
             const receiver = getUser(userId)
+            console.log("receiver", receiver)
+
             io.to(receiver.socketId).emit("newInviteDB", {
                 findUserAlertDB: [{
                     familyId,
