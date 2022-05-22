@@ -131,6 +131,8 @@ module.exports = server => {
             const findUser = await User.findOne({ email: selectEmail })
             const chkAlertDB = await Alert.findOne({ selectEmail, type })
 
+            const userId = findUser.userId
+
             if (!chkAlertDB) {
                 const createdAt = new Date()
 
@@ -145,8 +147,23 @@ module.exports = server => {
                     createdAt,
                 })
             } else {
+
                 socket.emit('errorMsg', "이미 초대한 가족입니다.");    // 이미 초대한 유저 예외처리
             }
+
+
+            const receiver = getUser(userId)
+            io.to(receiver.socketId).emit("newInviteDB", {
+                findUserAlertDB: {
+                    familyId,
+                    userId: findUser.userId,
+                    selectEmail,
+                    category: "가족 초대",
+                    type: "초대",
+                    nickname,
+                    createdAt,
+                }
+            })
         })
 
         socket.on("getMyAlert", async ({ userId, type }) => {
