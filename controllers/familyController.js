@@ -146,7 +146,7 @@ const createFamily = async (req, res) => {
 
     res
       .status(200)
-      .json({ msg: "가족이 생성되었습니다.", familyId: newFamily.familyId, newRoom })
+      .json({ msg: "가족이 생성되었습니다.", familyId: newFamily.familyId })
   } catch (error) {
     console.log("가족 생성에서 오류!", error)
     res.status(400).send({ msg: "가족 생성에 실패했습니다." })
