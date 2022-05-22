@@ -207,8 +207,8 @@ module.exports = server => {
         })
 
 
-        socket.on("disconnect", () => {
-            const a = getUser()
+        socket.on("disconnect", (userId) => {
+            const a = getUser(userId)
             console.log("aaaa", a)
 
             removeUser(socket.id)
