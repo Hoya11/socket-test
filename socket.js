@@ -170,8 +170,8 @@ module.exports = server => {
 
 
         // 사진 좋아요 댓글 알림
-        socket.on("sendNotification", (async ({ userName, userId, type, category }) => {
-            console.log("sendNotification-userId =>", userName, userId, type, category)
+        socket.on("sendNotification", (async ({ senderName, receiverId, type, category }) => {
+            console.log("sendNotification-userId =>", senderName, receiverId, type, category)
             // const receiver = getUser(userId)
 
             const cur_date = new Date()
@@ -180,8 +180,8 @@ module.exports = server => {
             const createdAt = new Date(utc + time_diff)
 
             await Alert.create({
-                userName,
-                userId,
+                senderName,
+                receiverId,
                 type,
                 category,
                 createdAt

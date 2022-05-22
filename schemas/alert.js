@@ -1,3 +1,4 @@
+const { string } = require("joi")
 const mongoose = require("mongoose")
 
 const alertSchema = mongoose.Schema({
@@ -25,6 +26,12 @@ const alertSchema = mongoose.Schema({
     createdAt: {
         type: Date,
     },
+    receiverId: {
+        type: String,
+    },
+    senderName: {
+        type: String,
+    }
 })
 
 alertSchema.virtual("alertId").get(function () {
