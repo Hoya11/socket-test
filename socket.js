@@ -127,7 +127,7 @@ module.exports = server => {
 
         //가족 멤버 초대
         socket.on("inviteMember", async ({ familyId, selectEmail, nickname, type }) => {
-            console.log("inviteMember =>", familyId, selectEmail, nickname)
+            console.log("inviteMember =>", familyId, selectEmail, nickname, type)
             const findUser = await User.findOne({ email: selectEmail })
             const chkAlertDB = await Alert.findOne({ selectEmail, type })
 
@@ -144,10 +144,9 @@ module.exports = server => {
                     nickname,
                     createdAt,
                 })
+            } else {
+                socket.emit('errorMsg', "이미 초대한 가족입니다.");    // 이미 초대한 유저 예외처리
             }
-            // else {
-            //     socket.emit('errorMsg', "이미 초대한 가족입니다.");    // 이미 초대한 유저 예외처리
-            // }
         })
 
         socket.on("getMyAlert", async ({ userId, type }) => {
