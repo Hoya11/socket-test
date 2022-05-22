@@ -167,8 +167,9 @@ module.exports = server => {
         })
 
         socket.on("getMyAlert", async ({ userId, type }) => {
-            if (userId) {
+            if (userId && type) {
                 const receiver = getUser(userId)
+                console.log("receiver =>", receiver)
                 const findUserAlertDB = await Alert.find({ userId, type: type })
                 console.log("findUserAlertDB 1 => ", findUserAlertDB)
                 findUserAlertDB.createdAt = timeForToday(findUserAlertDB.createdAt)
