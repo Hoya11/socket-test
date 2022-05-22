@@ -189,14 +189,14 @@ module.exports = server => {
         }))
 
         // 댓글 좋아요 알림보내는 부분
-        socket.on("getPhotoAlert", async ({ userId }) => {
+        socket.on("getPhotoAlert", async ({ receiverId }) => {
             console.log("getFamilyNoti rooms =>", socket.rooms)
-            console.log("getFamilyNoti 알림(userId) =>", userId)
+            console.log("getFamilyNoti 알림(receiverId) =>", receiverId)
 
-            const receiver = getUser(userId)
+            const receiver = getUser(receiverId)
 
             console.log("getFamilyNoti receiver => ", receiver)
-            const findUserAlertDB = await Alert.find({ userId })
+            const findUserAlertDB = await Alert.find({ receiverId })
             console.log("findUserAlertDB   ", findUserAlertDB)
 
             io.to(receiver.socketId).emit("getNotification", {
