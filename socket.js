@@ -211,7 +211,7 @@ module.exports = server => {
         })
 
 
-        socket.on("disconnect", () => {
+        socket.on("disconnect", async () => {
             const userFind = await Connect.findOne({ socketId: socket.id })
             if (userFind) {
                 await Connect.updateOne({ socketId: socket.id }, { $set: { connected: false } })
