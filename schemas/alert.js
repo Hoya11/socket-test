@@ -33,7 +33,7 @@ const alertSchema = mongoose.Schema({
         type: String
     },
     createdAt: {
-        type: Date,
+        type: String,
     },
 
 })
