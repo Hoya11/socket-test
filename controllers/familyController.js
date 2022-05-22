@@ -265,7 +265,7 @@ const getfamilyMember = async (req, res) => {
         familyConnect.userConnect = {}
       }
     }
-    res.status(200).json({ familyMemberList, userConnect })
+    res.status(200).json({ familyMemberList })
   } catch (error) {
     console.log("가족 구성원 조회에서 오류!", error)
     res.status(400).send({ result: false })
