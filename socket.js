@@ -81,6 +81,8 @@ module.exports = server => {
                 console.log("newConnectedUser", newConnectedUser)
             } else {
                 await Connect.updateOne({ userId }, { $set: { connected: true, socketId: receiver.socketId } })
+                const userFind22 = await Connect.findOne({ userId })
+                console.log("userFind22", userFind22)
             }
             console.log("userFind 22 =>", userFind)
         })
