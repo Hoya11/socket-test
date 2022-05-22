@@ -206,9 +206,13 @@ module.exports = server => {
             })
         })
 
+        socket.on("imOut", (userId) => {
+            console.log("imOut-userId", userId)
+        })
 
-        socket.on("disconnect", (userId) => {
-            const a = getUser(userId)
+
+        socket.on("disconnect", () => {
+            const a = getUser()
             console.log("aaaa", a)
 
             removeUser(socket.id)
