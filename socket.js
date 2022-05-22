@@ -185,6 +185,16 @@ module.exports = server => {
                 category,
                 createdAt
             })
+
+            const receiver = getUser(receiverId)
+            io.to(receiver.socketId).emit("getNotification", {
+                photoId,
+                senderName,
+                receiverId,
+                type,
+                category,
+                createdAt
+            })
         }))
 
 
