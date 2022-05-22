@@ -145,7 +145,7 @@ module.exports = server => {
                     createdAt,
                 })
             } else {
-                socket.emit('event_name', msg);    // 이미 초대한 유저 예외처리
+                socket.emit('errorMsg', "이미 초대한 가족입니다.");    // 이미 초대한 유저 예외처리
             }
         })
 
