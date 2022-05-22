@@ -132,9 +132,9 @@ module.exports = server => {
             const chkAlertDB = await Alert.findOne({ selectEmail, type })
 
             const userId = findUser.userId
+            const createdAt = new Date()
 
             if (!chkAlertDB) {
-                const createdAt = new Date()
 
                 //alert를 DB에 생성하는 API
                 await Alert.create({
