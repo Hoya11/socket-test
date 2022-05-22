@@ -169,7 +169,7 @@ module.exports = server => {
 
 
 
-        // 사진 좋아요 알림
+        // 사진 좋아요 댓글 알림
         socket.on("sendNotification", (async ({ userName, userId, type, category }) => {
             console.log("sendNotification-userId =>", userId)
             // const receiver = getUser(userId)
@@ -188,28 +188,44 @@ module.exports = server => {
             })
         }))
 
+        // 댓글 좋아요 알림보내는 부분
+        socket.on("getPhotoAlert", async ({ userId }) => {
+            console.log("getFamilyNoti rooms =>", socket.rooms)
+            console.log("getFamilyNoti 알림(userId) =>", userId)
+
+            const receiver = getUser(userId)
+
+            console.log("getFamilyNoti receiver => ", receiver)
+            const findUserAlertDB = await Alert.find({ userId })
+            console.log("findUserAlertDB   ", findUserAlertDB)
+
+            io.to(receiver.socketId).emit("getNotification", {
+                findAlertDB: findUserAlertDB,
+            })
+        })
+
 
         // 생성 알림
-        socket.on("sendFamilyNoti", (async ({ userId, senderName, receiverFamily, category, type }) => {
-            // console.log("socket.rooms =>", socket.rooms)
-            socket.join(receiverFamily)
-            // console.log("무슨값오지?", userId, senderName, receiverFamily, category, type)
-            //createdAt을 한국 시간대로 설정
-            const cur_date = new Date()
-            const utc = cur_date.getTime() + (cur_date.getTimezoneOffset() * 60 * 1000)
-            const time_diff = 9 * 60 * 60 * 1000
-            const createdAt = new Date(utc + time_diff)
+        // socket.on("sendFamilyNoti", (async ({ userId, senderName, receiverFamily, category, type }) => {
+        //     // console.log("socket.rooms =>", socket.rooms)
+        //     socket.join(receiverFamily)
+        //     // console.log("무슨값오지?", userId, senderName, receiverFamily, category, type)
+        //     //createdAt을 한국 시간대로 설정
+        //     const cur_date = new Date()
+        //     const utc = cur_date.getTime() + (cur_date.getTimezoneOffset() * 60 * 1000)
+        //     const time_diff = 9 * 60 * 60 * 1000
+        //     const createdAt = new Date(utc + time_diff)
 
-            //alert를 DB에 생성하는 API
-            await Alert.create({
-                userId,
-                familyId: receiverFamily,
-                category,
-                type,
-                nickname: senderName,
-                createdAt,
-            })
-        }))
+        //     //alert를 DB에 생성하는 API
+        //     await Alert.create({
+        //         userId,
+        //         familyId: receiverFamily,
+        //         category,
+        //         type,
+        //         nickname: senderName,
+        //         createdAt,
+        //     })
+        // }))
 
         // socket.on("userConnect", async ({ userId }) => {
         //     console.log("userConnect-userId =>", userId)
@@ -238,21 +254,7 @@ module.exports = server => {
         // })
 
 
-        // 댓글 좋아요 알림보내는 부분
-        socket.on("getPhotoAlert", async ({ userId }) => {
-            console.log("getFamilyNoti rooms =>", socket.rooms)
-            console.log("getFamilyNoti 알림(userId) =>", userId)
 
-            const receiver = getUser(userId)
-
-            console.log("getFamilyNoti receiver => ", receiver)
-            const findUserAlertDB = await Alert.find({ userId })
-            console.log("findUserAlertDB   ", findUserAlertDB)
-
-            io.to(receiver.socketId).emit("getNotification", {
-                findAlertDB: findUserAlertDB,
-            })
-        })
 
 
 
