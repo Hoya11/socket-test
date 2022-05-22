@@ -169,11 +169,11 @@ module.exports = server => {
         socket.on("getMyAlert", async ({ userId, type }) => {
             if (userId && type) {
                 const receiver = getUser(userId)
-                console.log("receiver =>", receiver)
-                const findUserAlertDB = await Alert.find({ userId, type: type })
-                console.log("findUserAlertDB 1 => ", findUserAlertDB)
-                findUserAlertDB[0].createdAt = timeForToday(findUserAlertDB[0].createdAt)
-                console.log("findUserAlertDB 2 => ", findUserAlertDB[0].createdAt)
+                // console.log("receiver =>", receiver)
+                const findUserAlertDB = await Alert.findOne({ userId, type: type })
+                // console.log("findUserAlertDB 1 => ", findUserAlertDB)
+                findUserAlertDB.createdAt = timeForToday(findUserAlertDB.createdAt)
+                // console.log("findUserAlertDB 2 => ", findUserAlertDB[0].createdAt)
                 io.to(receiver.socketId).emit("newInviteDB", {
                     findUserAlertDB: findUserAlertDB,
                 })
