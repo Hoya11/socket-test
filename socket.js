@@ -93,7 +93,10 @@ module.exports = server => {
             const chkAlertDB = await Alert.findOne({ familyId, selectEmail, type })
             console.log("findUser =>", findUser)
 
-            const userId = findUser._id
+            const userId = findUser.userId
+            console.log("findUser.userId =>", userId)
+            const userId2 = findUser._id
+            console.log("findUser.userId2 =>", userId2)
             const createdAt = new Date()
 
             if (!chkAlertDB) {
