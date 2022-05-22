@@ -277,15 +277,16 @@ const getfamilyMember = async (req, res) => {
     const { familyId } = req.params
 
     const familyMemberList = await FamilyMember.find({ familyId })
-    console.log(familyMemberList)
+
 
     for (let familyConnect of familyMemberList) {
       const userConnect = await Connect.findOne({ userId: familyConnect.userId })
       if (userConnect) {
         userConnect.connectedAt = timeForToday(userConnect.connectedAt)
+        console.log("userConnect.connectedAt =>", userConnect.connectedAt)
+        console.log("timeForToday =>", timeForToday(userConnect.connectedAt))
 
         familyConnect.userConnect = userConnect
-
       } else {
         familyConnect.userConnect = {}
       }
