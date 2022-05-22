@@ -90,13 +90,13 @@ module.exports = server => {
         //가족 멤버 초대
         socket.on("inviteMember", async ({ familyId, selectEmail, familyMemberNickname, nickname, type }) => {
             const findUser = await User.findOne({ email: selectEmail })
-            const chkAlertDB = await Alert.findOne({ selectEmail, type })
+            const chkAlertDB = await Alert.findOne({ familyId, selectEmail, type })
+
 
             const userId = findUser.userId
             const createdAt = new Date()
 
             if (!chkAlertDB) {
-
                 //alert를 DB에 생성하는 API
                 await Alert.create({
                     familyId,
@@ -111,8 +111,6 @@ module.exports = server => {
             } else {
                 socket.emit('errorMsg', "이미 초대한 가족입니다.");
             }
-
-
             const receiver = getUser(userId)
             io.to(receiver.socketId).emit("newInviteDB", {
                 findUserAlertDB: {
@@ -128,6 +126,7 @@ module.exports = server => {
             })
         })
 
+        //가족 초대 수락
         socket.on("getMyAlert", async ({ userId, type }) => {
             if (userId && type) {
                 const receiver = getUser(userId)
