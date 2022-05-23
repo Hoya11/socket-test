@@ -4,6 +4,7 @@ const User = require("./schemas/user")
 const FamilyMember = require("./schemas/familyMember")
 const Alert = require("./schemas/alert")
 const Connect = require("./schemas/connect")
+const Photo = require("./schemas/photo")
 
 
 function timeForToday(createdAt) {
@@ -149,61 +150,80 @@ module.exports = server => {
 
         // 사진 좋아요 알림
         socket.on("sendLikeNoti", (async ({ photoId, senderName, receiverId, type, category, likeChk }) => {
-            const createdAt = new Date()
+            console.log("sendLikeNoti", photoId, senderName, receiverId, type, category, likeChk)
 
-            if (likeChk) {
-                await Alert.create({
-                    photoId,
-                    senderName,
-                    receiverId,
-                    type,
-                    category,
-                    createdAt
-                })
-            } else {
-                await Alert.deleteOne({ photoId, receiverId })
-            }
+            if (!receiverId === undefined) {
 
-            const receiver = getUser(receiverId)
-            console.log("좋아요 알림receiver.socketId => ", receiver.socketId)
-            io.to(receiver.socketId).emit("getNotification", {
-                findAlertDB: {
-                    photoId,
-                    senderName,
-                    receiverId,
-                    type,
-                    category,
-                    createdAt: timeForToday(createdAt)
+                const photoUserChk = await Photo.findOne({ _id: photoId })
+                const userId = photoUserChk.userId
+
+                if (!receiverId === userId) {
+                    const createdAt = new Date()
+
+                    if (likeChk) {
+                        await Alert.create({
+                            photoId,
+                            senderName,
+                            receiverId,
+                            type,
+                            category,
+                            createdAt
+                        })
+                    } else {
+                        await Alert.deleteOne({ photoId, receiverId })
+                    }
+
+                    const receiver = getUser(receiverId)
+                    console.log("좋아요 알림receiver => ", receiver)
+                    console.log("좋아요 알림receiver.socketId => ", receiver.socketId)
+                    io.to(receiver.socketId).emit("getNotification", {
+                        findAlertDB: {
+                            photoId,
+                            senderName,
+                            receiverId,
+                            type,
+                            category,
+                            createdAt: timeForToday(createdAt)
+                        }
+                    })
                 }
-            })
+            }
         }))
 
         // 사진 댓글 알림
         socket.on("sendCommentNoti", (async ({ photoId, senderName, receiverId, type, category }) => {
             console.log("sendNotification-userId =>", photoId, senderName, receiverId, type, category)
-            const createdAt = new Date()
+            if (!receiverId === undefined) {
 
-            await Alert.create({
-                photoId,
-                senderName,
-                receiverId,
-                type,
-                category,
-                createdAt
-            })
-            const receiver = getUser(receiverId)
-            console.log("댓글 알림receiver.socketId => ", receiver.socketId)
+                const photoUserChk = await Photo.findOne({ _id: photoId })
+                const userId = photoUserChk.userId
 
-            io.to(receiver.socketId).emit("getNotification", {
-                findAlertDB: {
-                    photoId,
-                    senderName,
-                    receiverId,
-                    type,
-                    category,
-                    createdAt: timeForToday(createdAt)
+                if (!receiverId === userId) {
+                    const createdAt = new Date()
+
+                    await Alert.create({
+                        photoId,
+                        senderName,
+                        receiverId,
+                        type,
+                        category,
+                        createdAt
+                    })
+                    const receiver = getUser(receiverId)
+                    console.log("댓글 알림receiver.socketId => ", receiver.socketId)
+
+                    io.to(receiver.socketId).emit("getNotification", {
+                        findAlertDB: {
+                            photoId,
+                            senderName,
+                            receiverId,
+                            type,
+                            category,
+                            createdAt: timeForToday(createdAt)
+                        }
+                    })
                 }
-            })
+            }
         }))
 
 
