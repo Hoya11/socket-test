@@ -172,14 +172,14 @@ module.exports = server => {
                 console.log("좋아요 알림receiver => ", receiver)
                 console.log("좋아요 알림receiver.socketId => ", receiver.socketId)
                 io.to(receiver.socketId).emit("getNotification", {
-                    findAlertDB: {
+                    findAlertDB: [{
                         photoId,
                         senderName,
                         receiverId,
                         type,
                         category,
                         createdAt: timeForToday(createdAt)
-                    }
+                    }]
                 })
             }
         }))
@@ -201,14 +201,14 @@ module.exports = server => {
                 console.log("댓글 알림receiver.socketId => ", receiver.socketId)
 
                 io.to(receiver.socketId).emit("getNotification", {
-                    findAlertDB: {
+                    findAlertDB: [{
                         photoId,
                         senderName,
                         receiverId,
                         type,
                         category,
                         createdAt: timeForToday(createdAt)
-                    }
+                    }]
                 })
             }
         }))
