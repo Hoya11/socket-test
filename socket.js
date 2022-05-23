@@ -243,13 +243,13 @@ module.exports = server => {
 
         socket.on("imOut", async (userId) => {
             console.log("imOut-userId", userId)
-            const userId = userId.userId
-            const userFind = await Connect.findOne({ userId })
+            const socketUserId = userId.userId
+            const userFind = await Connect.findOne({ userId: socketUserId })
             console.log("disconnect-userFind 11=>", userFind)
             const createdAt = new Date()
 
             if (userFind) {
-                await Connect.updateOne({ userId }, { $set: { connected: false, connectedAt: createdAt } })
+                await Connect.updateOne({ userId: socketUserId }, { $set: { connected: false, connectedAt: createdAt } })
             }
             console.log("disconnect-userFind 22=>", userFind)
 
