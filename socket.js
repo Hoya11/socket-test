@@ -156,7 +156,7 @@ module.exports = server => {
             const photoUserChk = await Photo.findOne({ _id: photoId })
             console.log("photoUserChk", photoUserChk)
             const userFind22 = photoUserChk.userId
-            console.log("photoUserChk-userId =>", userId22)
+            console.log("photoUserChk-userId =>", userFind22)
 
 
             const createdAt = new Date()
