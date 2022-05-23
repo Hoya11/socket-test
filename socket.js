@@ -120,7 +120,8 @@ module.exports = server => {
             const receiver = getUser(userId)
             console.log("receiver", receiver)
 
-            io.to(receiver.socketId).emit("newInviteDB", {
+
+            io.to(receiver.socketId).emit("newInviteDB", { //receiver.socketId 콘솔로그 찍어보기(좋아요 댓글도 테스트해보기)
                 findUserAlertDB: [{
                     familyId,
                     userId: findUser.userId,
@@ -195,7 +196,6 @@ module.exports = server => {
                 category,
                 createdAt
             })
-
             const receiver = getUser(receiverId)
             io.to(receiver.socketId).emit("getNotification", {
                 findAlertDB: {
@@ -212,14 +212,20 @@ module.exports = server => {
 
         // 댓글 좋아요 알림보내는 부분
         socket.on("getPhotoAlert", async ({ receiverId }) => {
+            console.log("getPhotoAlert-receiverId => ", receiverId)
             const receiver = getUser(receiverId)
+            console.log("getPhotoAlert-receiver => ", receiver)
+
             const findUserAlertDB = await Alert.find({ receiverId })
-            for (let alertDB of findUserAlertDB) {
-                alertDB.createdAt = timeForToday(alertDB.createdAt)
+            console.log("findUserAlertDB =>", findUserAlertDB)
+            if (findUserAlertDB) {
+                for (let alertDB of findUserAlertDB) {
+                    alertDB.createdAt = timeForToday(alertDB.createdAt)
+                }
+                io.to(receiver.socketId).emit("getNotification", {
+                    findAlertDB: findUserAlertDB,
+                })
             }
-            io.to(receiver.socketId).emit("getNotification", {
-                findAlertDB: findUserAlertDB,
-            })
         })
 
         socket.on("imOut", (userId) => {
