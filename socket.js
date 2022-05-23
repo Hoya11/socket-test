@@ -59,32 +59,34 @@ module.exports = server => {
         console.log("소켓 연결됨", socket.id)
 
         socket.on("newUser", async ({ userId }) => {
-            console.log("newUser-userId =>", userId)
-            addNewUser(userId, socket.id)
-            console.log("newUser-addNewUser =>", addNewUser)
-            const receiver = getUser(userId)
-            console.log("newUser-receiver =>", receiver)
 
-            const createdAt = new Date()
-            const userFind = await Connect.findOne({ userId })
+            if (!userId === undefined) {
+                console.log("newUser-userId =>", userId)
+                addNewUser(userId, socket.id)
+                console.log("newUser-addNewUser =>", addNewUser)
+                const receiver = getUser(userId)
+                console.log("newUser-receiver =>", receiver)
 
-            console.log("userFind 11 =>", userFind)
+                const createdAt = new Date()
+                const userFind = await Connect.findOne({ userId })
 
+                console.log("userFind 11 =>", userFind)
+                if (!userFind) {
+                    const newConnectedUser = await Connect.create({
+                        userId: userId,
+                        connected: true,
+                        socketId: receiver.socketId,
+                        connectedAt: createdAt
+                    })
+                    console.log("newConnectedUser", newConnectedUser)
+                } else {
+                    await Connect.updateOne({ userId }, { $set: { connected: true, socketId: receiver.socketId } })
 
-            if (!userFind) {
-                const newConnectedUser = await Connect.create({
-                    userId: userId,
-                    connected: true,
-                    socketId: receiver.socketId,
-                    connectedAt: createdAt
-                })
-                console.log("newConnectedUser", newConnectedUser)
-            } else {
-                await Connect.updateOne({ userId }, { $set: { connected: true, socketId: receiver.socketId } })
-                const userFind22 = await Connect.findOne({ userId })
-                console.log("userFind22", userFind22)
+                    const userFind22 = await Connect.findOne({ userId })
+                    console.log("userFind22", userFind22)
+                }
+
             }
-
         })
 
 
