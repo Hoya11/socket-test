@@ -239,10 +239,17 @@ module.exports = server => {
             }
         })
 
+        socket.on("deleteAlert", async (alertId) => {
+            console.log("deleteAlert", alertId)
+
+            await Alert.deleteOne({ _id: alertId })
+        })
+
+
+
         socket.on("imOut", (userId) => {
             console.log("imOut-userId", userId)
         })
-
 
         socket.on("disconnect", async () => {
 
