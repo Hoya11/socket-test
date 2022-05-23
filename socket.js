@@ -229,7 +229,7 @@ module.exports = server => {
                 io.to(receiver.socketId).emit("getNotification", {
                     findAlertDB: findUserAlertDB,
                 })
-                console.log("댓글좋아요 알림findAlertDB ", findAlertDB)
+                console.log("댓글좋아요 알림findAlertDB ", findUserAlertDB)
                 console.log("댓글좋아요 알림findAlertDB ", receiver.socketId)
 
             }
