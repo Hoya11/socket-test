@@ -155,7 +155,9 @@ module.exports = server => {
             if (!receiverId === undefined) {
 
                 const photoUserChk = await Photo.findOne({ _id: photoId })
+                console.log("photoUserChk", photoUserChk)
                 const userId = photoUserChk.userId
+                console.log("photoUserChk-userId =>", userId)
 
                 if (!receiverId === userId) {
                     const createdAt = new Date()
