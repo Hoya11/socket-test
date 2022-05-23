@@ -149,59 +149,13 @@ module.exports = server => {
         })
 
         // 사진 좋아요 알림
-        socket.on("sendLikeNoti", (async ({ photoId, senderName, receiverId, type, category, likeChk }) => {
-            console.log("sendLikeNoti", photoId, senderName, receiverId, type, category, likeChk)
+        socket.on("sendLikeNoti", (async ({ photoId, senderName, senderId, receiverId, type, category, likeChk }) => {
+            console.log("sendLikeNoti", photoId, senderName, senderId, receiverId, type, category, likeChk)
 
-            if (receiverId !== undefined) {
-                const photoUserChk = await Photo.findOne({ _id: photoId })
-                console.log("photoUserChk", photoUserChk)
-                const userId = photoUserChk.userId
-                console.log("photoUserChk-userId =>", userId)
-
-                if (receiverId !== userId) {
-                    const createdAt = new Date()
-                    console.log("createdAt", createdAt)
-                    if (likeChk) {
-                        await Alert.create({
-                            photoId,
-                            senderName,
-                            receiverId,
-                            type,
-                            category,
-                            createdAt
-                        })
-                    } else {
-                        await Alert.deleteOne({ photoId, receiverId })
-                    }
-
-                    const receiver = getUser(receiverId)
-                    console.log("좋아요 알림receiver => ", receiver)
-                    console.log("좋아요 알림receiver.socketId => ", receiver.socketId)
-                    io.to(receiver.socketId).emit("getNotification", {
-                        findAlertDB: {
-                            photoId,
-                            senderName,
-                            receiverId,
-                            type,
-                            category,
-                            createdAt: timeForToday(createdAt)
-                        }
-                    })
-                }
-            }
-        }))
-
-        // 사진 댓글 알림
-        socket.on("sendCommentNoti", (async ({ photoId, senderName, receiverId, type, category }) => {
-            console.log("sendNotification-userId =>", photoId, senderName, receiverId, type, category)
-            if (receiverId !== undefined) {
-
-                const photoUserChk = await Photo.findOne({ _id: photoId })
-                const userId = photoUserChk.userId
-
-                if (receiverId !== userId) {
-                    const createdAt = new Date()
-
+            if (receiverId !== undefined && senderId !== receiverId) {
+                const createdAt = new Date()
+                console.log("createdAt", createdAt)
+                if (likeChk) {
                     await Alert.create({
                         photoId,
                         senderName,
@@ -210,20 +164,52 @@ module.exports = server => {
                         category,
                         createdAt
                     })
-                    const receiver = getUser(receiverId)
-                    console.log("댓글 알림receiver.socketId => ", receiver.socketId)
-
-                    io.to(receiver.socketId).emit("getNotification", {
-                        findAlertDB: {
-                            photoId,
-                            senderName,
-                            receiverId,
-                            type,
-                            category,
-                            createdAt: timeForToday(createdAt)
-                        }
-                    })
+                } else {
+                    await Alert.deleteOne({ photoId, receiverId })
                 }
+
+                const receiver = getUser(receiverId)
+                console.log("좋아요 알림receiver => ", receiver)
+                console.log("좋아요 알림receiver.socketId => ", receiver.socketId)
+                io.to(receiver.socketId).emit("getNotification", {
+                    findAlertDB: {
+                        photoId,
+                        senderName,
+                        receiverId,
+                        type,
+                        category,
+                        createdAt: timeForToday(createdAt)
+                    }
+                })
+            }
+        }))
+
+        // 사진 댓글 알림
+        socket.on("sendCommentNoti", (async ({ photoId, senderName, senderId, receiverId, type, category }) => {
+            console.log("sendNotification-userId =>", photoId, senderName, senderId, receiverId, type, category)
+            if (receiverId !== undefined && senderId !== receiverId) {
+                const createdAt = new Date()
+                await Alert.create({
+                    photoId,
+                    senderName,
+                    receiverId,
+                    type,
+                    category,
+                    createdAt
+                })
+                const receiver = getUser(receiverId)
+                console.log("댓글 알림receiver.socketId => ", receiver.socketId)
+
+                io.to(receiver.socketId).emit("getNotification", {
+                    findAlertDB: {
+                        photoId,
+                        senderName,
+                        receiverId,
+                        type,
+                        category,
+                        createdAt: timeForToday(createdAt)
+                    }
+                })
             }
         }))
 
