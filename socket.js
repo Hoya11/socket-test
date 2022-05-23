@@ -232,7 +232,6 @@ module.exports = server => {
                     })
                     console.log("댓글좋아요 알림findAlertDB ", findUserAlertDB)
                     console.log("댓글좋아요 알림receiver.socketId ", receiver.socketId)
-
                 }
             }
         })
