@@ -138,6 +138,7 @@ module.exports = server => {
 
         //가족 초대 수락
         socket.on("getMyAlert", async ({ userId, type }) => {
+
             if (userId && type) {
                 const receiver = getUser(userId)
                 const findUserAlertDB = await Alert.find({ userId, type: type })
