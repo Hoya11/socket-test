@@ -279,14 +279,7 @@ const getfamilyMember = async (req, res) => {
     const familyMemberList = await FamilyMember.find({ familyId })
     console.log(familyMemberList)
 
-    for (let familyConnect of familyMemberList) {
-      const userConnect = await Connect.findOne({ userId: familyConnect.userId })
-      if (userConnect) {
-        familyConnect.userConnect = userConnect
-      } else {
-        familyConnect.userConnect = {}
-      }
-    }
+
     res.status(200).json({ familyMemberList })
   } catch (error) {
     console.log("가족 구성원 조회에서 오류!", error)

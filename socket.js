@@ -81,7 +81,7 @@ module.exports = server => {
                     })
                     console.log("newConnectedUser", newConnectedUser)
                 } else {
-                    await Connect.updateOne({ userId }, { $set: { connected: true, socketId: receiver.socketId } })
+                    await Connect.updateOne({ userId }, { $set: { connected: true, socketId: receiver.socketId, connectedAt: createdAt } })
 
                     const userFind22 = await Connect.findOne({ userId })
                     console.log("userFind22", userFind22)
@@ -252,7 +252,7 @@ module.exports = server => {
             const createdAt = new Date()
 
             if (userFind) {
-                await Connect.updateOne({ socketId: socket.id }, { $set: { connected: false, connectedAt: timeForToday(createdAt) } })
+                await Connect.updateOne({ socketId: socket.id }, { $set: { connected: false, connectedAt: createdAt } })
             }
             console.log("disconnect-userFind 22=>", userFind)
 
