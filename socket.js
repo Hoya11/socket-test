@@ -149,14 +149,14 @@ module.exports = server => {
         })
 
         // 사진 좋아요 알림
-        socket.on("sendLikeNoti", (async ({ photoId, senderName, receiverId, type, category, likeChk }) => {
-            console.log("sendLikeNoti", photoId, senderName, receiverId, type, category, likeChk)
+        socket.on("sendLikeNoti", (async ({ photoId, senderName, userId, type, category, likeChk }) => {
+            console.log("sendLikeNoti", photoId, senderName, userId, type, category, likeChk)
 
 
             const photoUserChk = await Photo.findOne({ _id: photoId })
             console.log("photoUserChk", photoUserChk)
-            const userId = photoUserChk.userId
-            console.log("photoUserChk-userId =>", userId)
+            const userFind22 = photoUserChk.userId
+            console.log("photoUserChk-userId =>", userId22)
 
 
             const createdAt = new Date()
@@ -165,23 +165,23 @@ module.exports = server => {
                 await Alert.create({
                     photoId,
                     senderName,
-                    receiverId,
+                    receiverId: userId,
                     type,
                     category,
                     createdAt
                 })
             } else {
-                await Alert.deleteOne({ photoId, receiverId })
+                await Alert.deleteOne({ photoId, receiverId: userId })
             }
 
-            const receiver = getUser(receiverId)
+            const receiver = getUser(userId)
             console.log("좋아요 알림receiver => ", receiver)
             console.log("좋아요 알림receiver.socketId => ", receiver.socketId)
             io.to(receiver.socketId).emit("getNotification", {
                 findAlertDB: {
                     photoId,
                     senderName,
-                    receiverId,
+                    receiverId: userId,
                     type,
                     category,
                     createdAt: timeForToday(createdAt)
