@@ -61,7 +61,7 @@ module.exports = server => {
 
         socket.on("newUser", async ({ userId }) => {
 
-            if (!userId === undefined) {
+            if (userId !== undefined) {
                 console.log("newUser-userId =>", userId)
                 addNewUser(userId, socket.id)
                 console.log("newUser-addNewUser =>", addNewUser)
@@ -152,13 +152,13 @@ module.exports = server => {
         socket.on("sendLikeNoti", (async ({ photoId, senderName, receiverId, type, category, likeChk }) => {
             console.log("sendLikeNoti", photoId, senderName, receiverId, type, category, likeChk)
 
-            if (!receiverId === undefined) {
+            if (receiverId !== undefined) {
                 const photoUserChk = await Photo.findOne({ _id: photoId })
                 console.log("photoUserChk", photoUserChk)
                 const userId = photoUserChk.userId
                 console.log("photoUserChk-userId =>", userId)
 
-                if (!receiverId === userId) {
+                if (receiverId !== userId) {
                     const createdAt = new Date()
                     console.log("createdAt", createdAt)
                     if (likeChk) {
@@ -194,12 +194,12 @@ module.exports = server => {
         // 사진 댓글 알림
         socket.on("sendCommentNoti", (async ({ photoId, senderName, receiverId, type, category }) => {
             console.log("sendNotification-userId =>", photoId, senderName, receiverId, type, category)
-            if (!receiverId === undefined) {
+            if (receiverId !== undefined) {
 
                 const photoUserChk = await Photo.findOne({ _id: photoId })
                 const userId = photoUserChk.userId
 
-                if (!receiverId === userId) {
+                if (receiverId !== userId) {
                     const createdAt = new Date()
 
                     await Alert.create({
@@ -230,7 +230,7 @@ module.exports = server => {
 
         // 댓글 좋아요 알림보내는 부분
         socket.on("getPhotoAlert", async ({ receiverId }) => {
-            if (!receiverId === undefined) {
+            if (receiverId !== undefined) {
                 console.log("getPhotoAlert-receiverId => ", receiverId)
                 const receiver = getUser(receiverId)
                 console.log("getPhotoAlert-receiver => ", receiver)
