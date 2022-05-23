@@ -216,22 +216,24 @@ module.exports = server => {
 
         // 댓글 좋아요 알림보내는 부분
         socket.on("getPhotoAlert", async ({ receiverId }) => {
-            console.log("getPhotoAlert-receiverId => ", receiverId)
-            const receiver = getUser(receiverId)
-            console.log("getPhotoAlert-receiver => ", receiver)
+            if (!receiverId === undefined) {
+                console.log("getPhotoAlert-receiverId => ", receiverId)
+                const receiver = getUser(receiverId)
+                console.log("getPhotoAlert-receiver => ", receiver)
 
-            const findUserAlertDB = await Alert.find({ receiverId })
-            console.log("findUserAlertDB =>", findUserAlertDB)
-            if (findUserAlertDB) {
-                for (let alertDB of findUserAlertDB) {
-                    alertDB.createdAt = timeForToday(alertDB.createdAt)
+                const findUserAlertDB = await Alert.find({ receiverId })
+                console.log("findUserAlertDB =>", findUserAlertDB)
+                if (findUserAlertDB) {
+                    for (let alertDB of findUserAlertDB) {
+                        alertDB.createdAt = timeForToday(alertDB.createdAt)
+                    }
+                    io.to(receiver.socketId).emit("getNotification", {
+                        findAlertDB: findUserAlertDB,
+                    })
+                    console.log("댓글좋아요 알림findAlertDB ", findUserAlertDB)
+                    console.log("댓글좋아요 알림findAlertDB ", receiver.socketId)
+
                 }
-                io.to(receiver.socketId).emit("getNotification", {
-                    findAlertDB: findUserAlertDB,
-                })
-                console.log("댓글좋아요 알림findAlertDB ", findUserAlertDB)
-                console.log("댓글좋아요 알림findAlertDB ", receiver.socketId)
-
             }
         })
 
