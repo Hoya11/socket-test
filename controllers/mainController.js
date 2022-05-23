@@ -207,6 +207,7 @@ const getConnected = async (req, res) => {
     for (let familyConnect of familyMemberList) {
 
       console.log("familyConnect", familyConnect)
+      console.log("familyConnect.userId", familyConnect.userId)
       const userConnect = await Connect.findOne({ userId: familyConnect.userId })
       console.log("userConnect", userConnect)
       if (userConnect) {
