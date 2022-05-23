@@ -205,12 +205,16 @@ const getConnected = async (req, res) => {
     let familyMemberStatusList = []
 
     for (let familyConnect of familyMemberList) {
+
+      console.log("familyConnect", familyConnect)
       const userConnect = await Connect.findOne({ userId: familyConnect.userId })
+      console.log("userConnect", userConnect)
       if (userConnect) {
         userConnect.connectedAt = timeForToday(userConnect.connectedAt)
         familyMemberStatusList.push(userConnect)
       }
     }
+    console.log("familyMemberStatusList", familyMemberStatusList)
     res.status(200).json({ familyMemberStatusList })
   } catch (error) {
     console.log("가족 구성원 조회에서 오류!", error)
