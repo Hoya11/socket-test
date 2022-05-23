@@ -13,31 +13,6 @@ const VoiceAlbum = require("../schemas/voiceAlbum")
 const VoiceFile = require("../schemas/voiceFile")
 const Like = require("../schemas/like")
 const Joi = require("joi")
-const Connect = require("../schemas/connect")
-
-
-
-function timeForToday(createdAt) {
-  const today = new Date()
-  const timeValue = new Date(createdAt)
-
-  const betweenTime = Math.floor(
-    (today.getTime() - timeValue.getTime()) / 1000 / 60
-  ) // 분
-  if (betweenTime < 1) return '방금 전' // 1분 미만이면 방금 전
-  if (betweenTime < 60) return `${betweenTime}분 전` // 60분 미만이면 n분 전
-
-  const betweenTimeHour = Math.floor(betweenTime / 60) // 시
-  if (betweenTimeHour < 24) return `${betweenTimeHour}시간 전` // 24시간 미만이면 n시간 전
-
-  const betweenTimeDay = Math.floor(betweenTime / 60 / 24) // 일
-  if (betweenTimeDay < 7) return `${betweenTimeDay}일 전` // 7일 미만이면 n일 전
-  if (betweenTimeDay < 365)
-    return `${timeValue.getMonth() + 1}월 ${timeValue.getDate()}일` // 365일 미만이면 년을 제외하고 월 일만
-
-  return `${timeValue.getFullYear()}년 ${timeValue.getMonth() + 1
-    }월 ${timeValue.getDate()}일` // 365일 이상이면 년 월 일
-}
 
 
 

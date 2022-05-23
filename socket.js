@@ -243,6 +243,17 @@ module.exports = server => {
 
         socket.on("imOut", (userId) => {
             console.log("imOut-userId", userId)
+            const userFind = await Connect.findOne({ userId })
+            console.log("disconnect-userFind 11=>", userFind)
+            const createdAt = new Date()
+
+            if (userFind) {
+                await Connect.updateOne({ userId }, { $set: { connected: false, connectedAt: createdAt } })
+            }
+            console.log("disconnect-userFind 22=>", userFind)
+
+            removeUser(userId)
+            console.log("소켓 프론트에서 끊었음", userId)
         })
 
         socket.on("disconnect", async () => {
@@ -257,7 +268,7 @@ module.exports = server => {
             console.log("disconnect-userFind 22=>", userFind)
 
             removeUser(socket.id)
-            console.log("소켓 연결끊어졌음", socket.id)
+            console.log("소켓 백에서 연결끊어졌음", socket.id)
         })
     })
 }
