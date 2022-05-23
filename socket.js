@@ -241,7 +241,7 @@ module.exports = server => {
 
 
 
-        socket.on("imOut", (userId) => {
+        socket.on("imOut", async (userId) => {
             console.log("imOut-userId", userId)
             const userFind = await Connect.findOne({ userId })
             console.log("disconnect-userFind 11=>", userFind)
