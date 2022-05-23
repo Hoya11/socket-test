@@ -168,19 +168,24 @@ module.exports = server => {
                     await Alert.deleteOne({ photoId, receiverId })
                 }
 
-                const receiver = getUser(receiverId)
-                console.log("좋아요 알림receiver => ", receiver)
-                console.log("좋아요 알림receiver.socketId => ", receiver.socketId)
-                io.to(receiver.socketId).emit("getNotification", {
-                    findAlertDB: [{
-                        photoId,
-                        senderName,
-                        receiverId,
-                        type,
-                        category,
-                        createdAt: timeForToday(createdAt)
-                    }]
-                })
+                if (likeChk) {
+                    const alertList = await Alert.find({ receiverId })
+                    console.log("alertList", alertList)
+                    const receiver = getUser(receiverId)
+                    console.log("좋아요 알림receiver => ", receiver)
+                    console.log("좋아요 알림receiver.socketId => ", receiver.socketId)
+                    io.to(receiver.socketId).emit("getNotification", {
+                        findAlertDB: [{
+                            photoId,
+                            senderName,
+                            receiverId,
+                            type,
+                            category,
+                            createdAt: timeForToday(createdAt)
+                        }],
+                        alertList
+                    })
+                }
             }
         }))
 
