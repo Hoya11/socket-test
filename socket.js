@@ -170,6 +170,9 @@ module.exports = server => {
 
                 if (likeChk) {
                     const alertList = await Alert.find({ receiverId })
+                    for (let alert of alertList) {
+                        alert.createdAt = timeForToday(createdAt)
+                    }
                     console.log("alertList", alertList)
                     const receiver = getUser(receiverId)
                     console.log("좋아요 알림receiver => ", receiver)
@@ -182,8 +185,9 @@ module.exports = server => {
                             type,
                             category,
                             createdAt: timeForToday(createdAt)
-                        }],
-                        alertList
+                        },
+                        ...alertList
+                        ],
                     })
                 }
             }
