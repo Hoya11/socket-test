@@ -200,15 +200,12 @@ module.exports = server => {
                 const receiver = getUser(receiverId)
                 console.log("댓글 알림receiver.socketId => ", receiver.socketId)
 
+                const findAlertDB = await Alert.find({ receiverId })
+                for (let alert of findAlertDB) {
+                    alert.createdAt = timeForToday(createdAt)
+                }
                 io.to(receiver.socketId).emit("getNotification", {
-                    findAlertDB: [{
-                        photoId,
-                        senderName,
-                        receiverId,
-                        type,
-                        category,
-                        createdAt: timeForToday(createdAt)
-                    }]
+                    findAlertDB
                 })
             }
         }))
