@@ -169,16 +169,16 @@ module.exports = server => {
                 }
 
                 if (likeChk) {
-                    const alertList = await Alert.find({ receiverId })
-                    for (let alert of alertList) {
+                    const findAlertDB = await Alert.find({ receiverId })
+                    for (let alert of findAlertDB) {
                         alert.createdAt = timeForToday(createdAt)
                     }
-                    console.log("alertList", alertList)
+                    console.log("findAlertDB", findAlertDB)
                     const receiver = getUser(receiverId)
                     console.log("좋아요 알림receiver => ", receiver)
                     console.log("좋아요 알림receiver.socketId => ", receiver.socketId)
                     io.to(receiver.socketId).emit("getNotification", {
-                        ...alertList
+                        findAlertDB
                     })
                 }
             }
