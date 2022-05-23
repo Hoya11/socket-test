@@ -120,6 +120,7 @@ module.exports = server => {
             const receiver = getUser(userId)
             console.log("receiver", receiver)
 
+            console.log("가족멤버초대 receiver.socketId => ", receiver.socketId)
 
             io.to(receiver.socketId).emit("newInviteDB", { //receiver.socketId 콘솔로그 찍어보기(좋아요 댓글도 테스트해보기)
                 findUserAlertDB: [{
@@ -171,6 +172,7 @@ module.exports = server => {
             }
 
             const receiver = getUser(receiverId)
+            console.log("좋아요 알림receiver.socketId => ", receiver.socketId)
             io.to(receiver.socketId).emit("getNotification", {
                 findAlertDB: {
                     photoId,
@@ -197,6 +199,8 @@ module.exports = server => {
                 createdAt
             })
             const receiver = getUser(receiverId)
+            console.log("댓글 알림receiver.socketId => ", receiver.socketId)
+
             io.to(receiver.socketId).emit("getNotification", {
                 findAlertDB: {
                     photoId,
@@ -225,6 +229,9 @@ module.exports = server => {
                 io.to(receiver.socketId).emit("getNotification", {
                     findAlertDB: findUserAlertDB,
                 })
+                console.log("댓글좋아요 알림findAlertDB ", findAlertDB)
+                console.log("댓글좋아요 알림findAlertDB ", receiver.socketId)
+
             }
         })
 
