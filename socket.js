@@ -165,7 +165,7 @@ module.exports = server => {
                         createdAt
                     })
                 } else {
-                    await Alert.deleteOne({ photoId, receiverId })
+                    await Alert.deleteOne({ photoId, receiverId, type })
                 }
 
                 if (likeChk) {
