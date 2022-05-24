@@ -1,4 +1,4 @@
-require("dotenv").config()
+require("dotenv").config();
 
 module.exports = {
   rateLimit: {
@@ -22,9 +22,13 @@ module.exports = {
     accessKey: process.env.S3_ACCESS_KEY,
     secretKey: process.env.S3_SECRET_ACCESS_KEY,
     bucketRegion: process.env.S3_BUCKET_REGION,
+    s3Host: process.env.S3_HOST,
   },
   kakao: {
     kakaoId: process.env.KAKAO_ID,
     kakaoUrl: process.env.KAKAO_URL,
   },
-}
+  cors: {
+    cors: process.env.CORS,
+  },
+};
