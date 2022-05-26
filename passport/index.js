@@ -37,8 +37,10 @@ module.exports = (app) => {
   );
   passport.serializeUser((user, done) => {
     done(null, user);
+    return;
   });
   passport.deserializeUser((user, done) => {
     done(null, user);
+    return;
   });
 };
