@@ -14,8 +14,6 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: appleboy/checkout@main
-
       - name: Deploy
         uses: appleboy/ssh-action@master
         with:
