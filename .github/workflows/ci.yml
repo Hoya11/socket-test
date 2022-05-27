@@ -14,9 +14,11 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: tests
+      - name: tests-install
         run: npm install
-          npm test
+
+      - name: tests
+        run: npm test
 
       - name: Deploy
         uses: appleboy/ssh-action@master
