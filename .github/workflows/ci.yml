@@ -15,7 +15,8 @@ jobs:
 
     steps:
       - name: tests
-        run: npm install
+        run: |
+          npm install
           npm test
 
       - name: Deploy
