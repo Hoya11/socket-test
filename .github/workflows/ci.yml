@@ -15,8 +15,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: tests
-        uses: appleboy/ssh-action@master
+      
         run: npm test
 
       - name: Deploy
@@ -26,6 +25,7 @@ jobs:
           username: ${{ secrets.REMOTE_SSH_ID }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
           port: ${{ secrets.REMOTE_SSH_PORT }}
+          run: npm test
           script: |
             cd /home/ubuntu/SSAEM_SSAENG
             git config --global --add safe.directory /home/ubuntu/socket-test
