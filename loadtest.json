@@ -1,0 +1,36 @@
+{
+    "config": {
+       "target": "http://localhost:5000",
+       "phases": [
+          {
+             "duration": 60,            
+             "arrivalRate": 30
+          }
+       ]
+    },
+    "scenarios": [
+       {
+          "flow": [
+             {
+                "get": {
+                   "url": "/"
+                }
+             },
+             {
+                "post": {
+                   "url": "/auth/login",
+                   "json": {
+                      "email": "ppp@ppp.com",
+                      "password": "1234qwer"
+                   }
+                }
+             },
+             {
+                "get": {
+                   "url": "/hashtag?hashtag=test"
+                }
+             }
+          ]
+       }
+    ]
+ }
