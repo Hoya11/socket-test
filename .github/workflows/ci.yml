@@ -14,12 +14,6 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: tests
-        uses: appleboy/ssh-action@master
-        with:
-          key: ${{ secrets.REMOTE_SSH_KEY }}
-          run: npm test
-
       - name: Deploy
         uses: appleboy/ssh-action@master
         with:
@@ -34,3 +28,8 @@ jobs:
             sudo npm update
             sudo npm install
             sudo pm2 reload all
+
+      - name: tests
+        uses: appleboy/ssh-action@master
+        with:
+          run: npm test
