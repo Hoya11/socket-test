@@ -15,8 +15,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-         cache: 'npm'
       - run: npm ci
       - run: npm test
 
@@ -34,4 +32,3 @@ jobs:
             sudo npm update
             sudo npm install
             sudo pm2 reload all
-      
