@@ -16,7 +16,8 @@ jobs:
 
     steps:
       - name: tests
-      - run: npm test
+        uses: appleboy/ssh-action@master
+        run: npm test
 
       - name: Deploy
         uses: appleboy/ssh-action@master
