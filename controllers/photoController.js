@@ -213,13 +213,16 @@ const deletePhoto = async (req, res) => {
 // 사진 목록조회 (무한스크롤 적용)
 const getPhotos = async (req, res) => {
   const { photoAlbumId, pageNum } = req.params;
+  console.log(11, photoAlbumId, pageNum)
   try {
     const photoList = await Photo.find({ photoAlbumId })
       .sort({ $natural: -1 })
       .skip(pageNum - 1)
       .limit(14);
     const photoAlbum = await PhotoAlbum.findOne({ _id: photoAlbumId });
+    console.log(22, photoAlbum)
     const PhotoAlbumName = photoAlbum.photoAlbumName;
+    console.log(33, PhotoAlbumName)
     res.status(200).json({
       PhotoAlbumName,
       photoList,
