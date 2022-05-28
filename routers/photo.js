@@ -9,7 +9,11 @@ const {
   getPhotoDetail,
   putPhoto,
   deletePhoto,
+  getPhotos
 } = require("../controllers/photoController");
+
+// 무한스크롤 사진조회
+router.get("/:photoAlbumId/:pageNum", authMiddleware, getPhotos);
 
 // 사진 목록조회
 router.get("/:photoAlbumId", authMiddleware, getPhoto);
