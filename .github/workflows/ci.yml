@@ -14,10 +14,9 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: actions/checkout@v3
-      - run: npm ci
-      - run: npm test
-
+      # - uses: actions/checkout@v3
+      # - run: npm ci
+      # - run: npm test
       - name: Deploy
         uses: appleboy/ssh-action@master
         with:
@@ -31,4 +30,4 @@ jobs:
             sudo git pull
             sudo npm update
             sudo npm install
-            sudo pm2 reload all
+            sudo pm2 reload app.js
