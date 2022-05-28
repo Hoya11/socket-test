@@ -1,0 +1,36 @@
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+textarea.form-control {
+    height: 300px;
+}
+
+.header {
+    margin-bottom: 30px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.detail_header {
+    margin-bottom: 30px;
+}
+
+.detail_buttons {
+    margin-bottom: 30px;
+}
+
+pre {
+    font-size: 1rem;
+}
+
+.countComments {
+    color: dimgray;
+}

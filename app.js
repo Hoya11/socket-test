@@ -15,6 +15,7 @@ connect();
 passportConfig(app);
 
 app.use(cors());
+app.use(express.static("static"));
 // app.use(cors({ origin: config.cors.cors }));
 
 // app.get("/cors-test", (req, res) => {
