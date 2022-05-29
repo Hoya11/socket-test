@@ -10,6 +10,8 @@ const config = require("./config");
 const indexRouter = require("./routers/index");
 const connect = require("./schemas/index");
 const app = express();
+const session = require('express-session')
+const cookieParser = require('cookie-parser')
 
 connect();
 passportConfig(app);
@@ -33,6 +35,27 @@ app.use(
     max: config.rateLimit.maxRequest,
   })
 );
+
+app.use(cookieParser("123123"));
+const sessionMiddleware = session({
+  resave: false,
+  saveUninitialized: true,
+  secret: "123123",
+  secure: true,
+  httpOnly: true,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+    httpOnly: true,
+    sameSite: "none",
+    secure: true
+  }
+});
+app.use(sessionMiddleware);
+
+
+
+
+
 
 // 라우터 연결
 app.use(indexRouter);
