@@ -16,9 +16,6 @@ const voiceAlbumSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  voiceAlbumCover: {
-    type: String,
-  },
   createdAt: {
     type: Date,
     required: true,

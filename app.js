@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
+const csp = require("helmet-csp");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 const webSocket = require("./socket");
@@ -10,8 +11,8 @@ const config = require("./config");
 const indexRouter = require("./routers/index");
 const connect = require("./schemas/index");
 const app = express();
-const session = require('express-session')
-const cookieParser = require('cookie-parser')
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
 
 connect();
 passportConfig(app);
@@ -28,6 +29,7 @@ app.use(express.static("static"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet()); //보안에 필요한 헤더 추가 미들웨어
+
 app.use(morgan("tiny")); // 서버 요청 모니터링 미들웨어
 app.use(
   rateLimit({
@@ -47,15 +49,10 @@ const sessionMiddleware = session({
     maxAge: 1000 * 60 * 60 * 24 * 7,
     httpOnly: true,
     sameSite: "none",
-    secure: true
-  }
+    secure: true,
+  },
 });
 app.use(sessionMiddleware);
-
-
-
-
-
 
 // 라우터 연결
 app.use(indexRouter);

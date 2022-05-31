@@ -8,14 +8,18 @@ const user = require("../schemas/user");
 jest.mock("jsonwebtoken");
 jest.mock("../schemas/user");
 
+describe("계산 테스트", () => {
+  const a = 1,
+    b = 2;
 
-describe('계산 테스트', () => {
-  const a = 1, b = 2;
-
-  test('a + b는 3이다.', () => {
+  test("a + b는 3이다.", () => {
     expect(a + b).toEqual(3);
   });
 });
+
+// describe('voice 관련 테스트', () => {
+
+// })
 
 // describe("Auth Middleware", () => {
 //   // it("returns 401 for the request without Authorization header", async () => {
