@@ -44,9 +44,7 @@ const getVoiceAlbum = async (req, res) => {
   const { familyId } = req.params;
   try {
     const voiceAlbumList = await VoiceAlbum.find({ familyId });
-    res.status(200).json({
-      voiceAlbumList,
-    });
+    res.status(200).json(voiceAlbumList);
   } catch (error) {
     console.log("보이스앨범 조회 오류", error);
     res.status(400).send({

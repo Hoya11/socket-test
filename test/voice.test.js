@@ -1,113 +1,106 @@
 const httpMocks = require("node-mocks-http");
 const voiceAlbumController = require("../controllers/voiceAlbumController");
-const voiceAlbumSchemas = require("../schemas/voiceAlbum");
-// const voiceParams = require("./data/voice-params.json");
+const voiceAlbum = require("../schemas/voiceAlbum");
 const voiceAlbumBody = require("./data/voiceAlbum-body.json");
 const userLocals = require("./data/user-local.json");
-// const voiceAlbumId = require("./data/voiceAlbumId.json");
+const voiceAlbumList = require("./data/all-voiceAlbumList.json");
 const User = require("../schemas/user");
 
 jest.mock("../schemas/user");
 
-voiceAlbumSchemas.create = jest.fn();
-// let req, res, next;
+voiceAlbum.create = jest.fn();
+voiceAlbum.find = jest.fn();
+let req, res, next;
 
 // const userId = res.locals.user;
 
-// beforeEach(() => {
-//   req = httpMocks.createRequest();
-//   res = httpMocks.createResponse();
-//   next = jest.fn();
-// });
+beforeAll(() => {
+  req = httpMocks.createRequest();
+  res = httpMocks.createResponse();
+  next = jest.fn();
+});
 
-describe("Voice Album", () => {
-  //   // const res = {
-  //   //   status: jest.fn(() => res),
-  //   //   send: jest.fn(),
-  //   // };
+describe("voiceAlbum POST", () => {
+  // const res = {
+  //   status: jest.fn(() => res),
+  //   send: jest.fn(),
+  // };
 
-  //   beforeEach(() => {
-  //     // req.params = voiceParams;
-  //     req.body = voiceAlbumBody;
-  //     res.locals.user = userLocals;
-  //   });
-  //   // console.log(11, userLocals);
+  beforeEach(() => {
+    // req.params = voiceParams;
+    req.body = voiceAlbumBody;
+    res.locals.user = userLocals;
+  });
 
-  //   it("voiceAlbum Create function", () => {
-  //     expect(typeof voiceAlbumController.createVoiceAlbum).toBe("function");
-  //   });
+  it("voiceAlbum Create function", () => {
+    expect(typeof voiceAlbumController.createVoiceAlbum).toBe("function");
+  });
 
-  //   it("보이스앨범 생성 작동확인", async () => {
-  //     const req = httpMocks.createRequest({
-  //       method: "POST",
-  //       url: "/voiceAlbum/familyId",
-  //       params: {
-  //         familyId: "5555",
-  //       },
-  //       // body: {
-  //       //   voiceAlbumCover: "test11",
-  //       //   voiceAlbumName: "test22",
-  //       // },
-  //     });
-  //     await User.findOne.mockReturnValue({
-  //       userLocals,
-  //     });
-
-  //     await voiceAlbumController.createVoiceAlbum(req, res, next);
-  //     expect(voiceAlbumSchemas.create).toBeCalledTimes(1);
-  //     // expect(res._isJSON()).toBeTruthy();
-  //     // console.log(444, res.voiceAlbumId);
-  //     // console.log(555, voiceAlbumBody);
-  //   });
-
-  it("보이스앨범 생성 작동확인22", async () => {
+  it("voiceAlbum create chk", async () => {
     const req = httpMocks.createRequest({
       method: "POST",
       url: "/voiceAlbum/familyId",
       params: {
-        familyId: "5555",
-      },
-      // body: {
-      //   voiceAlbumCover: "test11",
-      //   voiceAlbumName: "test22",
-      // },
-    });
-    const res = httpMocks.createResponse({
-      locals: {
-        userId: "1234",
+        familyId: "1234",
       },
     });
-    const next = jest.fn();
     await User.findOne.mockReturnValue({
-      userId: res.locals,
+      userLocals,
     });
+
     await voiceAlbumController.createVoiceAlbum(req, res, next);
-    // await voiceAlbumSchemas.create.mockReturnValue(voiceAlbumBody);
-    // expect(res).toBe(201);
-    // expect(voiceAlbumSchemas.create).toBeCalledWith(voiceAlbumId);
-    expect(voiceAlbumSchemas.create).toBeCalledTimes(1);
-    // expect(res._isJSON()).toBeTruthy();
-    // console.log(444, res.voiceAlbumId);
-    // console.log(555, voiceAlbumBody);
+    expect(voiceAlbum.create).toBeCalledTimes(1);
+    expect(res._isJSON()).toBeTruthy();
   });
 
-  // it("보이스앨범 생성 201 response", async () => {
-  //   await voiceAlbumController.createVoiceAlbum(req, res, next);
-  //   expect(res.statusCode).toBe(201);
-  //   expect(res._isJSON()).toBeTruthy();
-  // });
+  it("voiceAlbum create 201 response", async () => {
+    await voiceAlbumController.createVoiceAlbum(req, res, next);
+    expect(res.statusCode).toBe(201);
+    expect(res._isJSON()).toBeTruthy();
+  });
 
-  // it("보이스앨범 res, Json body", async () => {
-  //   await voiceAlbumSchemas.create.mockReturnValue(voiceAlbumBody);
-  //   await voiceAlbumController.createVoiceAlbum(req, res, next);
-  //   expect(res._getJSONData()).toStrictEqual(voiceAlbumBody);
-  // });
+  it("voiceAlbum create res, Json body", async () => {
+    await voiceAlbum.create.mockReturnValue(voiceAlbumBody);
+    await voiceAlbumController.createVoiceAlbum(req, res, next);
+    expect(res._getJSONData()).toStrictEqual(voiceAlbumBody);
+  });
 
-  // it("error handle", async () => {
-  //   const errorMessage = { message: "에러메세지 테스트임" };
-  //   const rejectedPromise = Promise.reject(errorMessage);
-  //   voiceAlbumSchemas.create.mockReturnValue(rejectedPromise);
-  //   await voiceAlbumController.createVoiceAlbum(req, res, next);
-  //   expect(next).toBeCalledWith(errorMessage);
-  // });
+  it("voiceAlbum create error handle", async () => {
+    const errorMessage = { message: "error Message test" };
+    const rejectedPromise = Promise.reject(errorMessage);
+    voiceAlbum.create.mockReturnValue(rejectedPromise);
+    await voiceAlbumController.createVoiceAlbum(req, res, next);
+    expect(next).toBeCalledWith(errorMessage);
+  });
+});
+
+describe("voiceAlbum GET", () => {
+  it("should have a getVoiceAlbum function", () => {
+    expect(typeof voiceAlbumController.getVoiceAlbum).toBe("function");
+  });
+
+  it("should call voiceAlbum.find", async () => {
+    await voiceAlbumController.getVoiceAlbum(req, res, next);
+    expect(voiceAlbum.find).toHaveBeenCalledWith({});
+  });
+
+  it("should return 200 response", async () => {
+    await voiceAlbumController.getVoiceAlbum(req, res, next);
+    expect(res.statusCode).toBe(200);
+    expect(res._isJSON()).toBeTruthy();
+  });
+
+  it("should tretrun hson body in response", async () => {
+    voiceAlbum.find.mockReturnValue(voiceAlbumList);
+    await voiceAlbumController.getVoiceAlbum(req, res, next);
+    expect(res._getJSONData()).toStrictEqual(voiceAlbumList);
+  });
+
+  it("should handle errors", async () => {
+    const errorMessage = { message: "Error finding voiceAlbum data" };
+    const rejectedPromise = Promise.reject(errorMessage);
+    voiceAlbum.find.mockReturnValue(rejectedPromise);
+    await voiceAlbumController.getVoiceAlbum(req, res, next);
+    expect(next).toHaveBeenCalledWith(errorMessage);
+  });
 });
