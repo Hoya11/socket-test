@@ -21,10 +21,10 @@ beforeAll(() => {
 });
 
 describe("voiceAlbum POST", () => {
-  // const res = {
-  //   status: jest.fn(() => res),
-  //   send: jest.fn(),
-  // };
+  const res = {
+    status: jest.fn(() => res),
+    send: jest.fn(),
+  };
 
   beforeEach(() => {
     // req.params = voiceParams;
@@ -36,22 +36,22 @@ describe("voiceAlbum POST", () => {
     expect(typeof voiceAlbumController.createVoiceAlbum).toBe("function");
   });
 
-  it("voiceAlbum create chk", async () => {
-    const req = httpMocks.createRequest({
-      method: "POST",
-      url: "/voiceAlbum/familyId",
-      params: {
-        familyId: "1234",
-      },
-    });
-    await User.findOne.mockReturnValue({
-      userLocals,
-    });
+  // it("voiceAlbum create chk", async () => {
+  //   const req = httpMocks.createRequest({
+  //     method: "POST",
+  //     url: "/voiceAlbum/familyId",
+  //     params: {
+  //       familyId: "1234",
+  //     },
+  //   });
+  //   await User.findOne.mockReturnValue({
+  //     userLocals,
+  //   });
 
-    await voiceAlbumController.createVoiceAlbum(req, res, next);
-    expect(voiceAlbum.create).toBeCalledTimes(1);
-    expect(res._isJSON()).toBeTruthy();
-  });
+  //   await voiceAlbumController.createVoiceAlbum(req, res, next);
+  //   expect(voiceAlbum.create).toBeCalledTimes(1);
+  //   expect(res._isJSON()).toBeTruthy();
+  // });
 
   it("voiceAlbum create 201 response", async () => {
     await voiceAlbumController.createVoiceAlbum(req, res, next);
